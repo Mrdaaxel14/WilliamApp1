@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WilliamApp.LoginPage"
+             BackgroundColor="#F5F5F5">
+    <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
+        <Image Source="william_logo.png" HeightRequest="100" HorizontalOptions="Center" />
+        <Label Text="William Mayorista y Minorista" 
+               FontSize="24" 
+               FontAttributes="Bold" 
+               HorizontalOptions="Center" 
+               TextColor="#000000" />
+        <Entry Placeholder="Usuario" 
+               TextColor="Black" 
+               BackgroundColor="White" 
+               Margin="10" />
+        <Entry Placeholder="Contraseña" 
+               TextColor="Black" 
+               BackgroundColor="White" 
+               Margin="10" 
+               IsPassword="True" />
+        <Button Text="Iniciar" 
+                BackgroundColor="#FFC107" 
+                TextColor="White" 
+                HorizontalOptions="Fill" 
+                Clicked="OnLoginClicked" />
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,25 +1,27 @@
-﻿namespace WilliamApp
+﻿using System.Runtime.Versioning;
+using Microsoft.Maui.Controls;
+
+namespace WilliamApp
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
         public MainPage()
         {
             InitializeComponent();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        [SupportedOSPlatform("windows10.0.17763.0")]
+        private async void OnVerReportesDeVentasClicked(object sender, EventArgs e)
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
+            if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763))
+            {
+                // Navegar a la página SalesReportPage
+                await Navigation.PushAsync(new SalesReportPage());
+            }
             else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            {
+                await DisplayAlert("Error", "Esta funcionalidad solo está disponible en Windows 10.0.17763.0 o versiones posteriores.", "OK");
+            }
         }
     }
-
 }
