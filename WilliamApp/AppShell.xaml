@@ -4,12 +4,27 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:WilliamApp"
-    Shell.FlyoutBehavior="Disabled"
-    Title="WilliamApp">
+    FlyoutBehavior="Disabled">
 
+    <!-- Register LoginPage as the initial route -->
     <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate local:LoginPage}"
-        Route="LoginPage" />
+        x:Name="LoginShellContent"
+        Route="LoginPage"
+        ContentTemplate="{DataTemplate local:LoginPage}" />
+
+    <FlyoutItem Title="Inicio" Icon="william_logo.png" >
+        <ShellContent
+            Route="MainPage"
+            Title="Principal"
+            ContentTemplate="{DataTemplate local:MainPage}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Categorias"
+                Icon="dog.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate local:SalesReportPage}" />
+        </Tab>
+    </FlyoutItem>
+
+    <!-- Otros FlyoutItems pueden ir aquí -->
 
 </Shell>

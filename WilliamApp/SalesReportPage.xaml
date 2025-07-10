@@ -3,10 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WilliamApp.SalesReportPage"
              BackgroundColor="#F5F5F5"
-             Title="Reporte de Ventas">
+             Title="Categoria de productos">
     <VerticalStackLayout Spacing="20" Padding="30">
         <Image Source="william_logo.png" HeightRequest="100" HorizontalOptions="Center" />
-        <Label Text="Reporte de Ventas" 
+        <Label Text="Productos más vendidos" 
                FontSize="24" 
                FontAttributes="Bold" 
                HorizontalOptions="Center" 
