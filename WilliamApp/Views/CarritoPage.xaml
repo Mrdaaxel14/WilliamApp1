@@ -20,21 +20,21 @@
                    Padding="10"
                    HasShadow="True">
                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
-                    <Image Source="remera1.png"
+                    <Image Source="remera_hombre.png"
                            WidthRequest="70"
                            HeightRequest="70"
                            Aspect="AspectFill"
                            Grid.Column="0" />
 
                     <StackLayout Grid.Column="1" Padding="10,0">
-                        <Label Text="Remera Blanca"
+                        <Label Text="Remera Blanca Bando"
                                FontSize="16"
                                FontAttributes="Bold" />
                         <Label Text="Cantidad: 1" FontSize="14" />
-                        <Label Text="$3500.00" TextColor="DarkGreen" FontSize="14"/>
+                        <Label Text="$9.999" TextColor="DarkGreen" FontSize="14"/>
                     </StackLayout>
 
-                    <ImageButton Source="trash.png"
+                    <ImageButton Source="trash_solid.png"
                                  WidthRequest="24"
                                  HeightRequest="24"
                                  BackgroundColor="Transparent"
@@ -50,21 +50,21 @@
                    Padding="10"
                    HasShadow="True">
                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
-                    <Image Source="pantalon1.png"
+                    <Image Source="campera.png"
                            WidthRequest="70"
                            HeightRequest="70"
                            Aspect="AspectFill"
                            Grid.Column="0" />
 
                     <StackLayout Grid.Column="1" Padding="10,0">
-                        <Label Text="Pantalón Azul"
+                        <Label Text="Campera Negra"
                                FontSize="16"
                                FontAttributes="Bold" />
                         <Label Text="Cantidad: 2" FontSize="14" />
-                        <Label Text="$7200.00" TextColor="DarkGreen" FontSize="14"/>
+                        <Label Text="$35.998" TextColor="DarkGreen" FontSize="14"/>
                     </StackLayout>
 
-                    <ImageButton Source="trash.png"
+                    <ImageButton Source="trash_solid.png"
                                  WidthRequest="24"
                                  HeightRequest="24"
                                  BackgroundColor="Transparent"
@@ -74,7 +74,7 @@
             </Frame>
 
             <!-- Total -->
-            <Label Text="Total: $17,900.00"
+            <Label Text="Total: $45,997.00"
                    FontSize="18"
                    FontAttributes="Bold"
                    HorizontalOptions="End" />
