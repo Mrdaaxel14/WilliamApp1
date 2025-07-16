@@ -1,8 +1,96 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WilliamApp.Views.CarritoPage">
-    <StackLayout Padding="20">
-        <Label Text="Tu Carrito" FontSize="24" />
-    </StackLayout>
+             x:Class="WilliamApp.Views.CarritoPage"
+             Title="Carrito de Compras">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Título -->
+            <Label Text="Mi Carrito"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <!-- Producto 1 -->
+            <Frame BackgroundColor="#FAFAFA"
+                   BorderColor="#DDDDDD"
+                   CornerRadius="12"
+                   Padding="10"
+                   HasShadow="True">
+                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
+                    <Image Source="remera1.png"
+                           WidthRequest="70"
+                           HeightRequest="70"
+                           Aspect="AspectFill"
+                           Grid.Column="0" />
+
+                    <StackLayout Grid.Column="1" Padding="10,0">
+                        <Label Text="Remera Blanca"
+                               FontSize="16"
+                               FontAttributes="Bold" />
+                        <Label Text="Cantidad: 1" FontSize="14" />
+                        <Label Text="$3500.00" TextColor="DarkGreen" FontSize="14"/>
+                    </StackLayout>
+
+                    <ImageButton Source="trash.png"
+                                 WidthRequest="24"
+                                 HeightRequest="24"
+                                 BackgroundColor="Transparent"
+                                 VerticalOptions="Start"
+                                 Grid.Column="2"/>
+                </Grid>
+            </Frame>
+
+            <!-- Producto 2 -->
+            <Frame BackgroundColor="#FAFAFA"
+                   BorderColor="#DDDDDD"
+                   CornerRadius="12"
+                   Padding="10"
+                   HasShadow="True">
+                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
+                    <Image Source="pantalon1.png"
+                           WidthRequest="70"
+                           HeightRequest="70"
+                           Aspect="AspectFill"
+                           Grid.Column="0" />
+
+                    <StackLayout Grid.Column="1" Padding="10,0">
+                        <Label Text="Pantalón Azul"
+                               FontSize="16"
+                               FontAttributes="Bold" />
+                        <Label Text="Cantidad: 2" FontSize="14" />
+                        <Label Text="$7200.00" TextColor="DarkGreen" FontSize="14"/>
+                    </StackLayout>
+
+                    <ImageButton Source="trash.png"
+                                 WidthRequest="24"
+                                 HeightRequest="24"
+                                 BackgroundColor="Transparent"
+                                 VerticalOptions="Start"
+                                 Grid.Column="2"/>
+                </Grid>
+            </Frame>
+
+            <!-- Total -->
+            <Label Text="Total: $17,900.00"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   HorizontalOptions="End" />
+
+            <!-- Botones -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                <Button Text="Vaciar"
+            BackgroundColor="Gray"
+            TextColor="White"
+            Grid.Column="0" />
+
+                <Button Text="Finalizar Compra"
+            BackgroundColor="#4CAF50"
+            TextColor="White"
+            Grid.Column="1" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

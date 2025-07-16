@@ -16,12 +16,6 @@
                />
 
         <!-- Lista de productos -->
-        <CollectionView ItemsSource="{Binding ProductosFiltrados}"
-                        SelectionMode="None">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="2" />
-            </CollectionView.ItemsLayout>
-        </CollectionView>
         <Frame BorderColor="#CCCCCC"
                BackgroundColor="#FAFAFA"
                CornerRadius="10"
