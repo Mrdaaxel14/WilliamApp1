@@ -3,28 +3,27 @@
     x:Class="WilliamApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:WilliamApp"
-    FlyoutBehavior="Disabled">
+    xmlns:views="clr-namespace:WilliamApp.Views"
+    FlyoutBehavior="Flyout">
 
-    <!-- Register LoginPage as the initial route -->
-    <ShellContent
-        x:Name="LoginShellContent"
-        Route="LoginPage"
-        ContentTemplate="{DataTemplate local:LoginPage}" />
-
-    <FlyoutItem Title="Inicio" Icon="william_logo.png" >
-        <ShellContent
-            Route="MainPage"
-            Title="Principal"
-            ContentTemplate="{DataTemplate local:MainPage}" />
-    </FlyoutItem>
-    <FlyoutItem Title="Categorias"
-                Icon="dog.png">
-        <Tab>
-            <ShellContent ContentTemplate="{DataTemplate local:SalesReportPage}" />
-        </Tab>
+    <FlyoutItem Title="Inicio" Icon="home.png">
+        <ShellContent ContentTemplate="{DataTemplate views:HomePage}" />
     </FlyoutItem>
 
-    <!-- Otros FlyoutItems pueden ir aquí -->
+    <FlyoutItem Title="Catálogo" Icon="catalogo.png">
+        <ShellContent ContentTemplate="{DataTemplate views:CatalogoPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Carrito" Icon="carrito.png">
+        <ShellContent ContentTemplate="{DataTemplate views:CarritoPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Mis Pedidos" Icon="pedidos.png">
+        <ShellContent ContentTemplate="{DataTemplate views:MisPedidosPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Cuenta de Usuario" Icon="usuario.png">
+        <ShellContent ContentTemplate="{DataTemplate views:CuentaUsuarioPage}" />
+    </FlyoutItem>
 
 </Shell>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WilliamApp.Views.CatalogoPage"
+             Title="Catálogo de productos">
+
+    <StackLayout Padding="15" Spacing="10">
+
+        <!-- Búsqueda -->
+        <Entry Placeholder="Buscar producto..."
+               Text="{Binding TextoBusqueda}"
+               TextColor="Black"
+               BackgroundColor="White"
+               ClearButtonVisibility="WhileEditing"
+               FontSize="14"
+               />
+
+        <!-- Lista de productos -->
+        <CollectionView ItemsSource="{Binding ProductosFiltrados}"
+                        SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2" />
+            </CollectionView.ItemsLayout>
+        </CollectionView>
+        <Frame BorderColor="#CCCCCC"
+               BackgroundColor="#FAFAFA"
+               CornerRadius="10"
+               Padding="10"
+               Margin="5"
+               HasShadow="True">
+
+            <Grid ColumnDefinitions="*, *" Padding="5,0,5,0" ColumnSpacing="0">
+                <Image Grid.Column="0"
+                       Source="remera_hombre.png"
+                       Aspect="AspectFill" 
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       />
+                <Image Grid.Column="1"
+                       Source="campera.png"
+                       Aspect="AspectFill"
+                       HorizontalOptions="End"
+                       VerticalOptions="Center"
+                       />
+            </Grid>
+        </Frame>
+    </StackLayout>
+</ContentPage>

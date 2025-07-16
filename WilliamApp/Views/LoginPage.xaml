@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WilliamApp.LoginPage"
+             x:Class="WilliamApp.Views.LoginPage"
              BackgroundColor="#F5F5F5"
              Shell.FlyoutBehavior="Disabled">
     <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
         <Image Source="william_logo.png" HeightRequest="100" HorizontalOptions="Center" />
-        <Label Text="William Mayorista y Minorista" 
+        <Label Text="Bienvenido" 
                FontSize="24" 
                FontAttributes="Bold" 
                HorizontalOptions="Center" 
                TextColor="#000000" />
-        <Entry x:Name="UsuarioEntry"
-               Placeholder="Usuario" 
+        <Entry x:Name="CorreoEntry"
+               Placeholder="Correo electrónico" 
                TextColor="Black" 
                BackgroundColor="White" 
                Margin="10" />

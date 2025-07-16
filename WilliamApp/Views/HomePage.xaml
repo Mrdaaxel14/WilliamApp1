@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WilliamApp.Views.HomePage">
+
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="Auto, *, Auto" Padding="10,0,20,0" ColumnSpacing="10">
+            <!-- Título -->
+            <Label  
+                Grid.Column="0"
+                Text="William Mayorista"
+                FontSize="20"
+                FontAttributes="Bold"
+                VerticalOptions="Center"
+                Margin="0" />
+            <Label 
+                Grid.Column="1"
+                Text=""
+                />
+            <!-- Icono de usuario -->
+            <ImageButton Source="user_profile.png"
+                         Grid.Column="2"
+                         WidthRequest="32"
+                         HeightRequest="32"
+                         BackgroundColor="Transparent"
+                         VerticalOptions="Center"
+                         HorizontalOptions="End"
+                         Clicked="OnPerfilClicked"/>
+        </Grid>
+    </Shell.TitleView>
+
+    <ScrollView>
+        <StackLayout Padding="20, 20, 20, 20" Spacing="15">
+            <!-- Cuadro de búsqueda -->
+            <Border 
+            Stroke="#CCCCCC" 
+            StrokeThickness="1" 
+            StrokeShape="RoundRectangle 10,10,10,10" 
+            BackgroundColor="White"
+            Padding="0"
+            HeightRequest="38"
+            VerticalOptions="Center">
+                <Entry 
+                x:Name="BusquedaEntry"
+                Placeholder="Buscar..." 
+                
+                TextColor="Black" 
+                BackgroundColor="Transparent" 
+                ClearButtonVisibility="WhileEditing"
+                FontSize="14"
+                VerticalOptions="Center"
+                PlaceholderColor="Gray"/>
+            </Border>
+            <Label Text="Promociones" FontSize="20" FontAttributes="Bold" />
+            <Frame BackgroundColor="#FFD700" Padding="10">
+                <Label Text="¡Descuento del 25% en remeras!" />
+            </Frame>
+            <Image Source="promo1.png"
+                   Aspect="AspectFill"
+
+                   VerticalOptions="Center"/>
+            <Label Text="Productos Destacados" FontSize="20" FontAttributes="Bold" />
+            <Frame BackgroundColor="#ADD8E6" Padding="10">
+                <Label Text="Nueva colección de primavera 2025" />
+            </Frame>
+            <Image Source="promo2.png"
+                   Aspect="AspectFill"/>
+            
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
