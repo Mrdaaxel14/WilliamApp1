@@ -6,13 +6,6 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
-
-            <!-- Título -->
-            <Label Text="Mi Carrito"
-                   FontSize="24"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
-
             <!-- Producto 1 -->
             <Frame BackgroundColor="#FAFAFA"
                    BorderColor="#DDDDDD"
@@ -72,12 +65,17 @@
                                  Grid.Column="2"/>
                 </Grid>
             </Frame>
+            <Label Text=""
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center" />
 
             <!-- Total -->
             <Label Text="Total: $45,997.00"
                    FontSize="18"
                    FontAttributes="Bold"
-                   HorizontalOptions="End" />
+                   HorizontalOptions="End"
+                   Padding="0, 400, 0, 0"/>
 
             <!-- Botones -->
             <Grid ColumnDefinitions="*,*" ColumnSpacing="15">

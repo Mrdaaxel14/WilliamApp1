@@ -1,8 +1,81 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WilliamApp.Views.CuentaUsuarioPage">
-    <StackLayout Padding="20">
-        <Label Text="Cuenta de Usuario" FontSize="24" />
-    </StackLayout>
+             x:Class="WilliamApp.Views.CuentaUsuarioPage"
+             Title="Mi perfil"
+             BackgroundColor="#F9F9F9">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- Encabezado amarillo -->
+            <Grid BackgroundColor="#FFD600" Padding="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <HorizontalStackLayout VerticalOptions="Center" Spacing="15">
+                    <Frame WidthRequest="60" HeightRequest="60"
+                           CornerRadius="30"
+                           BackgroundColor="White"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Center">
+                        <Label Text="M"
+                               FontAttributes="Bold"
+                               FontSize="15"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               TextColor="Black"/>
+                    </Frame>
+
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="Miranda Axel Yair" FontSize="18" FontAttributes="Bold" TextColor="Black"/>
+                        <Label Text="mirandaaxel17@gmail.com" FontSize="14" TextColor="Black"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Grid>
+
+            <!-- Opciones del perfil -->
+            <VerticalStackLayout Padding="20" Spacing="10">
+                <!-- Reutilizable con DataTemplate o a mano -->
+
+                <Frame HasShadow="False" BorderColor="#E0E0E0" CornerRadius="10" Padding="15">
+                    <VerticalStackLayout Spacing="15">
+
+                        <!-- Elemento -->
+                        <Grid ColumnDefinitions="30,*,Auto">
+                            <Image Source="icon_user.png" WidthRequest="20" HeightRequest="20" />
+                            <VerticalStackLayout Grid.Column="1">
+                                <Label Text="Información personal" FontAttributes="Bold"/>
+                                <Label Text="Información de tu documento de identidad y tu actividad fiscal." FontSize="12" TextColor="Gray"/>
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2" Text="✓" TextColor="Green" FontAttributes="Bold" FontSize="18"/>
+                        </Grid>
+
+                        <!-- Más elementos -->
+                        <Grid ColumnDefinitions="30,*,Auto">
+                            <Image Source="icon_account.png" WidthRequest="20" HeightRequest="20" />
+                            <VerticalStackLayout Grid.Column="1">
+                                <Label Text="Datos de tu cuenta" FontAttributes="Bold"/>
+                                <Label Text="Datos que representan a la cuenta." FontSize="12" TextColor="Gray"/>
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2" Text="✓" TextColor="Green" FontAttributes="Bold" FontSize="18"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="30,*,Auto">
+                            <Image Source="icon_lock.png" WidthRequest="20" HeightRequest="20" />
+                            <VerticalStackLayout Grid.Column="1">
+                                <Label Text="Seguridad" FontAttributes="Bold"/>
+                                <Label Text="Tenés configurada la seguridad de tu cuenta." FontSize="12" TextColor="Gray"/>
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2" Text="✓" TextColor="Green" FontAttributes="Bold" FontSize="18"/>
+                        </Grid>
+
+                        <!-- Más opciones similares... -->
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

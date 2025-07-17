@@ -1,8 +1,41 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WilliamApp.Views.MisPedidosPage">
-    <StackLayout Padding="20">
-        <Label Text="Mis Pedidos" FontSize="24" />
-    </StackLayout>
+             x:Class="WilliamApp.Views.MisPedidosPage"
+             Title="Mis Pedidos"
+             BackgroundColor="#F9F9F9">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <!-- Pedido 1 -->
+            <Frame BorderColor="#CCCCCC" CornerRadius="10" Padding="15" BackgroundColor="White">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Pedido #1001" FontAttributes="Bold" FontSize="18" TextColor="#000"/>
+                    <Label Text="Fecha: 12/07/2025" FontSize="14" TextColor="#555"/>
+                    <Label Text="Estado: Entregado" FontSize="14" TextColor="Green"/>
+                    <Label Text="Total: $12.500" FontSize="14" TextColor="#000"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Pedido 2 -->
+            <Frame BorderColor="#CCCCCC" CornerRadius="10" Padding="15" BackgroundColor="White">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Pedido #1002" FontAttributes="Bold" FontSize="18" TextColor="#000"/>
+                    <Label Text="Fecha: 13/07/2025" FontSize="14" TextColor="#555"/>
+                    <Label Text="Estado: En camino" FontSize="14" TextColor="Orange"/>
+                    <Label Text="Total: $8.700" FontSize="14" TextColor="#000"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Pedido 3 -->
+            <Frame BorderColor="#CCCCCC" CornerRadius="10" Padding="15" BackgroundColor="White">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Pedido #1003" FontAttributes="Bold" FontSize="18" TextColor="#000"/>
+                    <Label Text="Fecha: 14/07/2025" FontSize="14" TextColor="#555"/>
+                    <Label Text="Estado: Procesando" FontSize="14" TextColor="Blue"/>
+                    <Label Text="Total: $4.300" FontSize="14" TextColor="#000"/>
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
