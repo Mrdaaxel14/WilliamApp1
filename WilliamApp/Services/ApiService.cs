@@ -12,12 +12,18 @@ namespace WilliamApp.Services
     public class ApiService
     {
         protected readonly HttpClient client;
-        //protected const string BASE_URL = "http://10.0.2.2:5185/api/";
-        protected const string BASE_URL = "http://localhost:5185";
+        protected readonly JsonSerializerOptions jsonOptions;
+        protected const string BASE_URL = "http://10.0.2.2:5185/api/";
+        //protected const string BASE_URL = "http://localhost:5185/api/";
         public ApiService()
         {
             client = new HttpClient();
             client.BaseAddress = new Uri(BASE_URL);
+
+            jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
 
             if (!string.IsNullOrEmpty(Settings.Token))
             {
@@ -29,7 +35,7 @@ namespace WilliamApp.Services
         protected async Task<T> GetAsync<T>(string url)
         {
             var response = await client.GetStringAsync(url);
-            return JsonSerializer.Deserialize<T>(response);
+            return JsonSerializer.Deserialize<T>(response, jsonOptions);
         }
 
         protected async Task<bool> PostAsync(string url, object data)

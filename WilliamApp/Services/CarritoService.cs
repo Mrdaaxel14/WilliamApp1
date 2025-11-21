@@ -12,12 +12,12 @@ namespace WilliamApp.Services
     {
         public async Task<bool> Agregar(int idProducto, int cantidad)
         {
-            return await PostAsync("carrito/agregar", new { idProducto, cantidad });
+            return await PostAsync("/api/carrito/agregar", new { idProducto, cantidad });
         }
 
         public async Task<List<CarritoItem>> ObtenerCarrito()
         {
-            var resp = await GetAsync<ApiResponse<List<CarritoItem>>>("carrito/mis-items");
+            var resp = await GetAsync<ApiResponse<List<CarritoItem>>>("/api/carrito/mis-items");
             return resp.response;
         }
     }

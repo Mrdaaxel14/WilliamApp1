@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using WilliamApp.Services;
 using WilliamApp.Views;
+using WilliamApp;
 
 namespace WilliamApp.ViewModels
 {
@@ -46,8 +47,8 @@ namespace WilliamApp.ViewModels
 
             if (ok)
             {
-                // 🔥 Navegación correcta usando Shell
-                await Shell.Current.GoToAsync("//HomePage");
+                // Cambiar la MainPage para que la navegación use el Shell principal
+                Application.Current.MainPage = new AppShell();
             }
             else
             {
