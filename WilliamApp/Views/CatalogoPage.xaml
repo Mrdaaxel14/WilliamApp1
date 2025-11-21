@@ -1,42 +1,26 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WilliamApp.Views.CatalogoPage"
-             Title="Catálogo de productos">
+             Title="Catálogo">
 
-    <StackLayout Padding="15" Spacing="10">
+    <CollectionView ItemsSource="{Binding Productos}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Frame Margin="10" Padding="10" BorderColor="Gray">
+                    <VerticalStackLayout>
 
-        <!-- Búsqueda -->
-        <Entry Placeholder="Buscar producto..."
-               Text="{Binding TextoBusqueda}"
-               TextColor="Black"
-               BackgroundColor="White"
-               ClearButtonVisibility="WhileEditing"
-               FontSize="14"
-               />
+                        <Label Text="{Binding Descripcion}" 
+                               FontSize="18" 
+                               FontAttributes="Bold"/>
 
-        <!-- Lista de productos -->
-        <Frame BorderColor="#CCCCCC"
-               BackgroundColor="#FAFAFA"
-               CornerRadius="10"
-               Padding="10"
-               Margin="5"
-               HasShadow="True">
+                        <Label Text="{Binding Marca}" />
 
-            <Grid ColumnDefinitions="*, *" Padding="5,0,5,0" ColumnSpacing="0">
-                <Image Grid.Column="0"
-                       Source="remera_hombre.png"
-                       Aspect="AspectFill" 
-                       HorizontalOptions="Start"
-                       VerticalOptions="Center"
-                       />
-                <Image Grid.Column="1"
-                       Source="campera.png"
-                       Aspect="AspectFill"
-                       HorizontalOptions="End"
-                       VerticalOptions="Center"
-                       />
-            </Grid>
-        </Frame>
-    </StackLayout>
+                        <Label Text="{Binding Precio, StringFormat='${0:F2}'}" 
+                               TextColor="Green"/>
+
+                    </VerticalStackLayout>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 </ContentPage>

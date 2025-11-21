@@ -1,94 +1,23 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WilliamApp.Views.CarritoPage"
-             Title="Carrito de Compras">
+             Title="Mi Carrito">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <!-- Producto 1 -->
-            <Frame BackgroundColor="#FAFAFA"
-                   BorderColor="#DDDDDD"
-                   CornerRadius="12"
-                   Padding="10"
-                   HasShadow="True">
-                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
-                    <Image Source="remera_hombre.png"
-                           WidthRequest="70"
-                           HeightRequest="70"
-                           Aspect="AspectFill"
-                           Grid.Column="0" />
+    <CollectionView ItemsSource="{Binding Items}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Frame Padding="10">
+                    <VerticalStackLayout>
 
-                    <StackLayout Grid.Column="1" Padding="10,0">
-                        <Label Text="Remera Blanca Bando"
-                               FontSize="16"
+                        <Label Text="{Binding Producto.Descripcion}" 
                                FontAttributes="Bold" />
-                        <Label Text="Cantidad: 1" FontSize="14" />
-                        <Label Text="$9.999" TextColor="DarkGreen" FontSize="14"/>
-                    </StackLayout>
 
-                    <ImageButton Source="trash_solid.png"
-                                 WidthRequest="24"
-                                 HeightRequest="24"
-                                 BackgroundColor="Transparent"
-                                 VerticalOptions="Start"
-                                 Grid.Column="2"/>
-                </Grid>
-            </Frame>
+                        <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}"/>
 
-            <!-- Producto 2 -->
-            <Frame BackgroundColor="#FAFAFA"
-                   BorderColor="#DDDDDD"
-                   CornerRadius="12"
-                   Padding="10"
-                   HasShadow="True">
-                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
-                    <Image Source="campera.png"
-                           WidthRequest="70"
-                           HeightRequest="70"
-                           Aspect="AspectFill"
-                           Grid.Column="0" />
+                    </VerticalStackLayout>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 
-                    <StackLayout Grid.Column="1" Padding="10,0">
-                        <Label Text="Campera Negra"
-                               FontSize="16"
-                               FontAttributes="Bold" />
-                        <Label Text="Cantidad: 2" FontSize="14" />
-                        <Label Text="$35.998" TextColor="DarkGreen" FontSize="14"/>
-                    </StackLayout>
-
-                    <ImageButton Source="trash_solid.png"
-                                 WidthRequest="24"
-                                 HeightRequest="24"
-                                 BackgroundColor="Transparent"
-                                 VerticalOptions="Start"
-                                 Grid.Column="2"/>
-                </Grid>
-            </Frame>
-            <Label Text=""
-                    FontSize="18"
-                    FontAttributes="Bold"
-                    HorizontalOptions="Center" />
-
-            <!-- Total -->
-            <Label Text="Total: $45,997.00"
-                   FontSize="18"
-                   FontAttributes="Bold"
-                   HorizontalOptions="End"
-                   Padding="0, 400, 0, 0"/>
-
-            <!-- Botones -->
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
-                <Button Text="Vaciar"
-            BackgroundColor="Gray"
-            TextColor="White"
-            Grid.Column="0" />
-
-                <Button Text="Finalizar Compra"
-            BackgroundColor="#4CAF50"
-            TextColor="White"
-            Grid.Column="1" />
-            </Grid>
-        </VerticalStackLayout>
-    </ScrollView>
 </ContentPage>

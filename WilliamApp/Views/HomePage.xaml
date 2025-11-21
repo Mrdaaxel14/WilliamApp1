@@ -65,7 +65,7 @@
             </Frame>
             <Image Source="promo2.png"
                    Aspect="AspectFill"/>
-            
+
         </StackLayout>
     </ScrollView>
 </ContentPage>

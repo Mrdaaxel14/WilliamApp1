@@ -1,4 +1,6 @@
 using Microsoft.Maui.Controls;
+using WilliamApp.ViewModels;
+
 namespace WilliamApp.Views
 {
     public partial class LoginPage : ContentPage
@@ -6,22 +8,7 @@ namespace WilliamApp.Views
         public LoginPage()
         {
             InitializeComponent();
+            BindingContext = new LoginViewModel();
         }
-
-        private void OnLoginClicked(object sender, EventArgs e)
-        {
-        string usuario = CorreoEntry?.Text ?? string.Empty;
-        string contraseña = ContraseñaEntry?.Text ?? string.Empty;
-
-        if (!string.IsNullOrWhiteSpace(usuario) && !string.IsNullOrWhiteSpace(contraseña))
-            {
-            Application.Current.MainPage = new AppShell();
-            }
-        else
-            {
-            DisplayAlert("Error", "Por favor, ingrese usuario y contraseña", "OK");
-            }
-        }
-
     }
 }

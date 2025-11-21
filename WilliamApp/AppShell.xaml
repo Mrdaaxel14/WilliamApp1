@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Shell
     x:Class="WilliamApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:views="clr-namespace:WilliamApp.Views"
-    FlyoutBehavior="Flyout">
+    xmlns:views="clr-namespace:WilliamApp.Views">
 
     <FlyoutItem Title="Inicio" Icon="home.png">
         <ShellContent ContentTemplate="{DataTemplate views:HomePage}" />
@@ -19,11 +18,7 @@
     </FlyoutItem>
 
     <FlyoutItem Title="Mis Pedidos" Icon="pedidos.png">
-        <ShellContent ContentTemplate="{DataTemplate views:MisPedidosPage}" />
-    </FlyoutItem>
-
-    <FlyoutItem Title="Cuenta de Usuario" Icon="usuario.png">
-        <ShellContent ContentTemplate="{DataTemplate views:CuentaUsuarioPage}" />
+        <ShellContent ContentTemplate="{DataTemplate views:PedidosPage}" />
     </FlyoutItem>
 
 </Shell>

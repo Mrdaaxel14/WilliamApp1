@@ -1,9 +1,13 @@
-namespace WilliamApp.Views;
-
-public partial class CarritoPage : ContentPage
+using Microsoft.Maui.Controls;
+using WilliamApp.ViewModels;
+namespace WilliamApp.Views
 {
-	public CarritoPage()
-	{
-		InitializeComponent();
-	}
+    public partial class CarritoPage : ContentPage
+    {
+        public CarritoPage()
+        {
+            InitializeComponent();
+            BindingContext = new CarritoViewModel();
+        }
+    }
 }
