@@ -57,8 +57,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiAsset Remove="Resources\Raw\AboutAssets.txt" />
-	  <MauiAsset Remove="Resources\Raw\network_security_config.xml" />
+		<MauiAsset Remove="Resources\Raw\AboutAssets.txt" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -70,10 +69,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <AndroidResource Include="Resources\Raw\AboutAssets.txt" />
-	  <AndroidResource Include="Resources\Raw\network_security_config.xml">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </AndroidResource>
+		<AndroidResource Include="Resources\Raw\AboutAssets.txt" />
+		<AndroidResource Include="Resources\Xml\network_security_config.xml" />
 	</ItemGroup>
 
 	<ItemGroup>
