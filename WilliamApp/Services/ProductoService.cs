@@ -12,7 +12,7 @@ namespace WilliamApp.Services
     {
         public async Task<List<Producto>> ObtenerProductos()
         {
-            var apiResp = await GetAsync<ApiResponse<List<Producto>>>("/api/producto/lista");
+            var apiResp = await GetAsync<ApiResponse<List<Producto>>>("producto/lista");
             return apiResp.response;
         }
     }

@@ -25,21 +25,37 @@ namespace WilliamApp.Services
                 PropertyNameCaseInsensitive = true
             };
 
+            ConfigureAuthorization();
+        }
+
+        private void ConfigureAuthorization()
+        {
             if (!string.IsNullOrEmpty(Settings.Token))
             {
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", Settings.Token);
             }
+            else
+            {
+                client.DefaultRequestHeaders.Authorization = null;
+            }
         }
 
         protected async Task<T> GetAsync<T>(string url)
         {
-            var response = await client.GetStringAsync(url);
-            return JsonSerializer.Deserialize<T>(response, jsonOptions);
+            ConfigureAuthorization();
+
+            using var response = await client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(content, jsonOptions);
         }
 
         protected async Task<bool> PostAsync(string url, object data)
         {
+            ConfigureAuthorization();
+
             var json = JsonSerializer.Serialize(data);
             var response = await client.PostAsync(url,
                 new StringContent(json, Encoding.UTF8, "application/json"));

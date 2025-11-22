@@ -18,14 +18,17 @@ namespace WilliamApp.Services
             var data = new { email, password };
             var json = JsonSerializer.Serialize(data);
 
-            var response = await client.PostAsync("/api/auth/login",
+            var response = await client.PostAsync("auth/login",
                 new StringContent(json, Encoding.UTF8, "application/json"));
 
             if (!response.IsSuccessStatusCode)
                 return false;
 
             var content = await response.Content.ReadAsStringAsync();
-            var obj = JsonSerializer.Deserialize<LoginResponse>(content);
+            var obj = JsonSerializer.Deserialize<LoginResponse>(content, jsonOptions);
+
+            if (string.IsNullOrEmpty(obj?.Token))
+                return false;
 
             Settings.Token = obj.Token;
             return true;

@@ -12,12 +12,12 @@ namespace WilliamApp.Services
     {
         public async Task<bool> CrearPedido()
         {
-            return await PostAsync("/api/pedido/crear", new { });
+            return await PostAsync("pedido/crear", new { });
         }
 
         public async Task<List<Pedido>> MisPedidos()
         {
-            var resp = await GetAsync<ApiResponse<List<Pedido>>>("/api/pedido/mis-pedidos");
+            var resp = await GetAsync<ApiResponse<List<Pedido>>>("pedido/mis-pedidos");
             return resp.response;
         }
     }
