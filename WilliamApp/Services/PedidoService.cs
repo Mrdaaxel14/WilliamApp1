@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 using WilliamApp.Models;
 
@@ -31,8 +27,21 @@ namespace WilliamApp.Services
 
         public async Task<List<Pedido>> MisPedidos()
         {
-            var resp = await GetAsync<ApiResponse<List<Pedido>>>("pedido/mis-pedidos");
-            return resp.response;
+            try
+            {
+                var resp = await GetAsync<ApiResponse<List<Pedido>>>("pedido/mis-pedidos");
+                return resp?.response ?? new List<Pedido>();
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error al obtener pedidos: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado al obtener pedidos: {ex.Message}");
+            }
+
+            return new List<Pedido>();
         }
     }
 }
