@@ -1,9 +1,21 @@
-namespace WilliamApp.Views;
+using Microsoft.Maui.Controls;
+using WilliamApp.Models;
+using WilliamApp.ViewModels;
 
-public partial class DetalleProductoPage : ContentPage
+namespace WilliamApp.Views
 {
-	public DetalleProductoPage()
-	{
-		InitializeComponent();
-	}
+    public partial class DetalleProductoPage : ContentPage
+    {
+        public DetalleProductoPage(Producto producto)
+        {
+            InitializeComponent();
+
+            var vm = new ProductoDetalleViewModel
+            {
+                Producto = producto
+            };
+
+            BindingContext = vm;
+        }
+    }
 }

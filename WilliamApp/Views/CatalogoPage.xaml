@@ -3,24 +3,52 @@
              x:Class="WilliamApp.Views.CatalogoPage"
              Title="Catálogo">
 
-    <CollectionView ItemsSource="{Binding Productos}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <Frame Margin="10" Padding="10" BorderColor="Gray">
-                    <VerticalStackLayout>
+    <StackLayout Padding="10" Spacing="10">
+        <Label Text="Categorías"
+               FontAttributes="Bold"
+               FontSize="18" />
 
-                        <Label Text="{Binding Descripcion}" 
-                               FontSize="18" 
-                               FontAttributes="Bold"/>
+        <CollectionView ItemsSource="{Binding Categorias}"
+                        ItemsLayout="HorizontalList"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding CategoriaSeleccionada}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="12" Margin="5" BorderColor="#FFD600" CornerRadius="12">
+                        <Label Text="{Binding Descripcion}" />
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
-                        <Label Text="{Binding Marca}" />
+        <Label Text="Productos"
+               FontAttributes="Bold"
+               FontSize="18" />
 
-                        <Label Text="{Binding Precio, StringFormat='${0:F2}'}" 
-                               TextColor="Green"/>
+        <CollectionView ItemsSource="{Binding ProductosFiltrados}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnProductoSeleccionado">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="10" Padding="10" BorderColor="Gray">
+                        <VerticalStackLayout>
 
-                    </VerticalStackLayout>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+                            <Label Text="{Binding Descripcion}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"/>
+
+                            <Label Text="{Binding Marca}" />
+
+                            <Label Text="{Binding oCategoria.Descripcion}"
+                                   FontSize="12" />
+
+                            <Label Text="{Binding Precio, StringFormat='${0:F2}'}"
+                                   TextColor="Green"/>
+
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
 </ContentPage>

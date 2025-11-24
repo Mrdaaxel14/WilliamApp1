@@ -21,4 +21,8 @@
         <ShellContent ContentTemplate="{DataTemplate views:PedidosPage}" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Perfil" Icon="user_profile.png">
+        <ShellContent ContentTemplate="{DataTemplate views:CuentaUsuarioPage}" />
+    </FlyoutItem>
+
 </Shell>

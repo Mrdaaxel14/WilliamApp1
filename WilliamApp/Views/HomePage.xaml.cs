@@ -1,13 +1,16 @@
-namespace WilliamApp.Views;
+using Microsoft.Maui.Controls;
 
-public partial class HomePage : ContentPage
+namespace WilliamApp.Views
 {
-    public HomePage()
+    public partial class HomePage : ContentPage
     {
-        InitializeComponent();
-    }
-    private void OnPerfilClicked(object sender, EventArgs e)
-    {
-
+        public HomePage()
+        {
+            InitializeComponent();
+        }
+        private async void OnPerfilClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync(nameof(CuentaUsuarioPage));
+        }
     }
 }

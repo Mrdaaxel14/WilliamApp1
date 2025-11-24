@@ -3,21 +3,33 @@
              x:Class="WilliamApp.Views.CarritoPage"
              Title="Mi Carrito">
 
-    <CollectionView ItemsSource="{Binding Items}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <Frame Padding="10">
-                    <VerticalStackLayout>
+    <VerticalStackLayout Padding="10" Spacing="10">
+        <CollectionView ItemsSource="{Binding Items}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10">
+                        <VerticalStackLayout>
 
-                        <Label Text="{Binding Producto.Descripcion}" 
-                               FontAttributes="Bold" />
+                            <Label Text="{Binding Producto.Descripcion}"
+                                   FontAttributes="Bold" />
 
-                        <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}"/>
+                            <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}"/>
+                            <Label Text="{Binding Producto.Precio, StringFormat='${0:F2}'}"/>
 
-                    </VerticalStackLayout>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
+        <Grid ColumnDefinitions="*,Auto" Padding="10,0">
+            <Label Text="Total" FontAttributes="Bold" />
+            <Label Grid.Column="1" Text="{Binding Total, StringFormat='${0:F2}'}" />
+        </Grid>
+
+        <Button Text="Confirmar pedido"
+                BackgroundColor="#FFD600"
+                TextColor="Black"
+                Command="{Binding IrAConfirmarCommand}" />
+    </VerticalStackLayout>
 </ContentPage>

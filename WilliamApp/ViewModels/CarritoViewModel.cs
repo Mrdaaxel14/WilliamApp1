@@ -9,12 +9,16 @@ using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
 using WilliamApp.Services;
 using WilliamApp.Models;
+using WilliamApp.Views;
 
 namespace WilliamApp.ViewModels
 {
     public class CarritoViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<CarritoItem> Items { get; set; }
+        public decimal Total { get; set; }
+        public Command IrAConfirmarCommand { get; }
+
         private CarritoService carritoService;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -23,6 +27,7 @@ namespace WilliamApp.ViewModels
         {
             carritoService = new CarritoService();
             Items = new ObservableCollection<CarritoItem>();
+            IrAConfirmarCommand = new Command(async () => await IrAConfirmar());
             CargarCarrito();
         }
 
@@ -45,6 +50,9 @@ namespace WilliamApp.ViewModels
 
                 foreach (var item in lista)
                     Items.Add(item);
+
+                Total = Items.Sum(i => i.Cantidad * i.Producto.Precio);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Total)));
             }
             catch (HttpRequestException)
             {
@@ -55,6 +63,11 @@ namespace WilliamApp.ViewModels
 
                 Application.Current.MainPage = new NavigationPage(new Views.LoginPage());
             }
+        }
+
+        private async Task IrAConfirmar()
+        {
+            await Shell.Current.GoToAsync(nameof(ConfirmarPedidoPage));
         }
     }
 }

@@ -6,76 +6,70 @@
              BackgroundColor="#F9F9F9">
 
     <ScrollView>
-        <VerticalStackLayout Spacing="0">
+        <VerticalStackLayout Spacing="15" Padding="15">
+            <Frame BackgroundColor="#FFD600" Padding="20" CornerRadius="12">
+                <VerticalStackLayout>
+                    <Label Text="Mis datos"
+                           FontAttributes="Bold"
+                           FontSize="20" />
 
-            <!-- Encabezado amarillo -->
-            <Grid BackgroundColor="#FFD600" Padding="20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+                    <Label Text="Nombre" />
+                    <Entry Text="{Binding Nombre}" />
 
-                <HorizontalStackLayout VerticalOptions="Center" Spacing="15">
-                    <Frame WidthRequest="60" HeightRequest="60"
-                           CornerRadius="30"
-                           BackgroundColor="White"
-                           HorizontalOptions="Start"
-                           VerticalOptions="Center">
-                        <Label Text="M"
-                               FontAttributes="Bold"
-                               FontSize="15"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center"
-                               TextColor="Black"/>
-                    </Frame>
+                    <Label Text="Email" />
+                    <Entry Text="{Binding Email}" />
 
-                    <VerticalStackLayout VerticalOptions="Center">
-                        <Label Text="Miranda Axel Yair" FontSize="18" FontAttributes="Bold" TextColor="Black"/>
-                        <Label Text="mirandaaxel17@gmail.com" FontSize="14" TextColor="Black"/>
-                    </VerticalStackLayout>
-                </HorizontalStackLayout>
-            </Grid>
+                    <Label Text="Teléfono" />
+                    <Entry Text="{Binding Telefono}" />
 
-            <!-- Opciones del perfil -->
-            <VerticalStackLayout Padding="20" Spacing="10">
-                <!-- Reutilizable con DataTemplate o a mano -->
+                    <Button Text="Guardar cambios"
+                            BackgroundColor="White"
+                            TextColor="Black"
+                            Command="{Binding GuardarDatosCommand}" />
+                </VerticalStackLayout>
+            </Frame>
 
-                <Frame HasShadow="False" BorderColor="#E0E0E0" CornerRadius="10" Padding="15">
-                    <VerticalStackLayout Spacing="15">
+            <Frame Padding="15" CornerRadius="12" BorderColor="#E0E0E0" HasShadow="False">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Métodos de pago" FontAttributes="Bold" />
+                    <CollectionView ItemsSource="{Binding MetodosPago}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="10" BorderColor="#FFD600" CornerRadius="10">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Alias}" FontAttributes="Bold" />
+                                        <Label Text="{Binding Resumen}" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
 
-                        <!-- Elemento -->
-                        <Grid ColumnDefinitions="30,*,Auto">
-                            <Image Source="icon_user.png" WidthRequest="20" HeightRequest="20" />
-                            <VerticalStackLayout Grid.Column="1">
-                                <Label Text="Información personal" FontAttributes="Bold"/>
-                                <Label Text="Información de tu documento de identidad y tu actividad fiscal." FontSize="12" TextColor="Gray"/>
-                            </VerticalStackLayout>
-                            <Label Grid.Column="2" Text="✓" TextColor="Green" FontAttributes="Bold" FontSize="18"/>
-                        </Grid>
+                    <Button Text="Agregar método"
+                            Command="{Binding AgregarMetodoPagoCommand}" />
+                </VerticalStackLayout>
+            </Frame>
 
-                        <!-- Más elementos -->
-                        <Grid ColumnDefinitions="30,*,Auto">
-                            <Image Source="icon_account.png" WidthRequest="20" HeightRequest="20" />
-                            <VerticalStackLayout Grid.Column="1">
-                                <Label Text="Datos de tu cuenta" FontAttributes="Bold"/>
-                                <Label Text="Datos que representan a la cuenta." FontSize="12" TextColor="Gray"/>
-                            </VerticalStackLayout>
-                            <Label Grid.Column="2" Text="✓" TextColor="Green" FontAttributes="Bold" FontSize="18"/>
-                        </Grid>
+            <Frame Padding="15" CornerRadius="12" BorderColor="#E0E0E0" HasShadow="False">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Direcciones" FontAttributes="Bold" />
+                    <CollectionView ItemsSource="{Binding Direcciones}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="10" BorderColor="#FFD600" CornerRadius="10">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Etiqueta}" FontAttributes="Bold" />
+                                        <Label Text="{Binding Referencia}" FontSize="12" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
 
-                        <Grid ColumnDefinitions="30,*,Auto">
-                            <Image Source="icon_lock.png" WidthRequest="20" HeightRequest="20" />
-                            <VerticalStackLayout Grid.Column="1">
-                                <Label Text="Seguridad" FontAttributes="Bold"/>
-                                <Label Text="Tenés configurada la seguridad de tu cuenta." FontSize="12" TextColor="Gray"/>
-                            </VerticalStackLayout>
-                            <Label Grid.Column="2" Text="✓" TextColor="Green" FontAttributes="Bold" FontSize="18"/>
-                        </Grid>
-
-                        <!-- Más opciones similares... -->
-                    </VerticalStackLayout>
-                </Frame>
-            </VerticalStackLayout>
+                    <Button Text="Agregar dirección"
+                            Command="{Binding AgregarDireccionCommand}" />
+                </VerticalStackLayout>
+            </Frame>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

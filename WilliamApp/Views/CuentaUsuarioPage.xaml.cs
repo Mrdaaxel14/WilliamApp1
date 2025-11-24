@@ -1,9 +1,14 @@
-namespace WilliamApp.Views;
+using Microsoft.Maui.Controls;
+using WilliamApp.ViewModels;
 
-public partial class CuentaUsuarioPage : ContentPage
+namespace WilliamApp.Views
 {
-	public CuentaUsuarioPage()
-	{
-		InitializeComponent();
-	}
+    public partial class CuentaUsuarioPage : ContentPage
+    {
+        public CuentaUsuarioPage()
+        {
+            InitializeComponent();
+            BindingContext = new PerfilViewModel();
+        }
+    }
 }

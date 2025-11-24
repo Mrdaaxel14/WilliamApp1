@@ -1,9 +1,14 @@
-namespace WilliamApp.Views;
+using Microsoft.Maui.Controls;
+using WilliamApp.ViewModels;
 
-public partial class ConfirmarPedidoPage : ContentPage
+namespace WilliamApp.Views
 {
-	public ConfirmarPedidoPage()
-	{
-		InitializeComponent();
-	}
+    public partial class ConfirmarPedidoPage : ContentPage
+    {
+        public ConfirmarPedidoPage()
+        {
+            InitializeComponent();
+            BindingContext = new ConfirmarPedidoViewModel();
+        }
+    }
 }

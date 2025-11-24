@@ -2,11 +2,45 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WilliamApp.Views.ConfirmarPedidoPage"
-             Title="ConfirmarPedidoPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Confirmar pedido">
+    <ScrollView>
+        <VerticalStackLayout Padding="15" Spacing="15">
+            <Label Text="Resumen del pedido" FontAttributes="Bold" FontSize="18" />
+
+            <CollectionView ItemsSource="{Binding Items}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*,Auto" Padding="5">
+                            <Label Text="{Binding Producto.Descripcion}" />
+                            <Label Grid.Column="1" Text="{Binding Cantidad, StringFormat='x{0}'}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Grid ColumnDefinitions="*,Auto" Padding="5,0">
+                <Label Text="Total" FontAttributes="Bold" />
+                <Label Grid.Column="1" Text="{Binding Total, StringFormat='${0:F2}'}" />
+            </Grid>
+
+            <Label Text="Dirección de entrega" FontAttributes="Bold" />
+            <Picker ItemsSource="{Binding Direcciones}"
+                    ItemDisplayBinding="{Binding Etiqueta}"
+                    SelectedItem="{Binding DireccionSeleccionada}" />
+            <Button Text="Agregar dirección"
+                    Command="{Binding AgregarDireccionCommand}" />
+
+            <Label Text="Pago" FontAttributes="Bold" />
+            <Picker ItemsSource="{Binding MetodosPago}"
+                    ItemDisplayBinding="{Binding Resumen}"
+                    SelectedItem="{Binding MetodoPagoSeleccionado}" />
+            <Button Text="Agregar método de pago"
+                    Command="{Binding AgregarMetodoPagoCommand}" />
+
+            <Button Text="Confirmar con pago simulado"
+                    BackgroundColor="#FFD600"
+                    TextColor="Black"
+                    Command="{Binding ConfirmarCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
