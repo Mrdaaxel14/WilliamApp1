@@ -1,69 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using WilliamApp.Services;
+using System.Windows.Input;
+using Microsoft.Maui.Controls;
 using WilliamApp.Models;
+using WilliamApp.Services;
 
 namespace WilliamApp.ViewModels
 {
+    public class CategoriaConProductos
+    {
+        public Categoria Categoria { get; set; }
+        public ObservableCollection<Producto> Productos { get; set; } = new();
+        public string NombreCategoria => Categoria?.Descripcion ?? "Categoría";
+    }
+
     public class CatalogoViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Producto> Productos { get; set; }
-        public ObservableCollection<Categoria> Categorias { get; set; }
-        public ObservableCollection<Producto> ProductosFiltrados { get; set; }
+        private readonly ProductoService productoService;
+        private bool isBusy;
 
-        private readonly ProductoService service;
-        private Categoria categoriaSeleccionada;
+        public ObservableCollection<CategoriaConProductos> Categorias { get; } = new();
+
+        public ICommand RecargarCommand { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public CatalogoViewModel()
+        public bool IsBusy
         {
-            Productos = new ObservableCollection<Producto>();
-            Categorias = new ObservableCollection<Categoria>();
-            ProductosFiltrados = new ObservableCollection<Producto>();
-            service = new ProductoService();
-            Cargar();
-        }
-
-        private async Task Cargar()
-        {
-            var lista = await service.ObtenerProductos();
-            Productos.Clear();
-            foreach (var p in lista) Productos.Add(p);
-
-            Categorias.Clear();
-            foreach (var cat in lista.Select(p => p.oCategoria).DistinctBy(c => c.IdCategoria))
-                Categorias.Add(cat);
-
-            AplicarFiltro();
-        }
-
-        public Categoria CategoriaSeleccionada
-        {
-            get => categoriaSeleccionada;
+            get => isBusy;
             set
             {
-                categoriaSeleccionada = value;
-                OnPropertyChanged(nameof(CategoriaSeleccionada));
-                AplicarFiltro();
+                if (isBusy == value) return;
+                isBusy = value;
+                OnPropertyChanged(nameof(IsBusy));
             }
         }
 
-        public void AplicarFiltro()
+        public CatalogoViewModel()
         {
-            ProductosFiltrados.Clear();
+            productoService = new ProductoService();
+            RecargarCommand = new Command(async () => await CargarCatalogo());
+            _ = CargarCatalogo();
+        }
 
-            var filtrados = categoriaSeleccionada == null
-                ? Productos
-                : new ObservableCollection<Producto>(Productos.Where(p => p.IdCategoria == categoriaSeleccionada.IdCategoria));
+        private async Task CargarCatalogo()
+        {
+            if (IsBusy)
+                return;
 
-            foreach (var p in filtrados)
-                ProductosFiltrados.Add(p);
+            IsBusy = true;
+
+            try
+            {
+                var productos = await productoService.ObtenerProductos();
+                Categorias.Clear();
+
+                var grupos = productos
+                    .Where(p => p.oCategoria != null)
+                    .GroupBy(p => p.oCategoria.IdCategoria)
+                    .Select(g => new CategoriaConProductos
+                    {
+                        Categoria = g.First().oCategoria,
+                        Productos = new ObservableCollection<Producto>(g.OrderBy(p => p.Descripcion))
+                    })
+                    .OrderBy(c => c.Categoria.Descripcion);
+
+                foreach (var grupo in grupos)
+                    Categorias.Add(grupo);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         protected void OnPropertyChanged(string name)
