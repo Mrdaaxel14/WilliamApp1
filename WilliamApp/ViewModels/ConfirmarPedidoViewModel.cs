@@ -108,7 +108,7 @@ namespace WilliamApp.ViewModels
                     "Tu pedido fue confirmado con el pago simulado.",
                     "OK");
 
-                await Shell.Current.GoToAsync("//Mis Pedidos");
+                await Shell.Current.GoToAsync("//pedidos");
             }
             else
             {

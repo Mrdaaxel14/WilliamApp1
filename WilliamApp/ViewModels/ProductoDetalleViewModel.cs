@@ -58,7 +58,7 @@ namespace WilliamApp.ViewModels
                     "Producto agregado al carrito",
                     "OK");
 
-                await Shell.Current.GoToAsync("//Carrito");
+                await Shell.Current.GoToAsync("//carrito");
             }
             else
             {

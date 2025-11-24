@@ -10,7 +10,7 @@ namespace WilliamApp.Views
         }
         private async void OnPerfilClicked(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync(nameof(CuentaUsuarioPage));
+            await Shell.Current.GoToAsync("//perfil");
         }
     }
 }

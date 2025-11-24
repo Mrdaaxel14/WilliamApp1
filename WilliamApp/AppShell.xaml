@@ -5,23 +5,23 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:WilliamApp.Views">
 
-    <FlyoutItem Title="Inicio" Icon="home.png">
+    <FlyoutItem Route="home" Title="Inicio" Icon="home.png">
         <ShellContent ContentTemplate="{DataTemplate views:HomePage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Catálogo" Icon="catalogo.png">
+    <FlyoutItem Route="catalogo" Title="Catálogo" Icon="catalogo.png">
         <ShellContent ContentTemplate="{DataTemplate views:CatalogoPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Carrito" Icon="carrito.png">
+    <FlyoutItem Route="carrito" Title="Carrito" Icon="carrito.png">
         <ShellContent ContentTemplate="{DataTemplate views:CarritoPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Mis Pedidos" Icon="pedidos.png">
+    <FlyoutItem Route="pedidos" Title="Mis Pedidos" Icon="pedidos.png">
         <ShellContent ContentTemplate="{DataTemplate views:PedidosPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Perfil" Icon="user_profile.png">
+    <FlyoutItem Route="perfil" Title="Perfil" Icon="user_profile.png">
         <ShellContent ContentTemplate="{DataTemplate views:CuentaUsuarioPage}" />
     </FlyoutItem>
 

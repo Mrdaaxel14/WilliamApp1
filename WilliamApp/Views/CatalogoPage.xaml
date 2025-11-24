@@ -6,14 +6,48 @@
     <RefreshView Command="{Binding RecargarCommand}" IsRefreshing="{Binding IsBusy}">
         <ScrollView>
             <VerticalStackLayout Padding="16" Spacing="16">
-                <Label Text="Explorá nuestro catálogo"
-                       FontSize="24"
-                       FontAttributes="Bold"
-                       TextColor="Black" />
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Explorá nuestro catálogo"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="Black" />
+                        <Label Text="Productos listos para agregar al carrito"
+                               FontSize="14"
+                               TextColor="#616161" />
+                    </VerticalStackLayout>
+                    <ActivityIndicator Grid.Column="1"
+                                       IsRunning="{Binding IsBusy}"
+                                       IsVisible="{Binding IsBusy}"
+                                       Color="#FFD600"
+                                       VerticalOptions="Center" />
+                </Grid>
+
+                <Frame BackgroundColor="#FFFDE7" BorderColor="#FFD600" CornerRadius="12" Padding="12">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Consejo"
+                               FontAttributes="Bold"
+                               TextColor="#F57F17" />
+                        <Label Text="Tocá cualquier producto para ver sus detalles y agregarlo al carrito."
+                               TextColor="#424242" />
+                    </VerticalStackLayout>
+                </Frame>
+
                 <CollectionView ItemsSource="{Binding Categorias}">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
                     </CollectionView.ItemsLayout>
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout Padding="24" Spacing="12" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Label Text="{Binding MensajeEstado}" TextColor="#616161" HorizontalOptions="Center" />
+                            <Button Text="Reintentar"
+                                    Command="{Binding RecargarCommand}"
+                                    HorizontalOptions="Center"
+                                    BackgroundColor="#FFD600"
+                                    TextColor="Black"
+                                    IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame BorderColor="#FFD600" CornerRadius="12" Padding="12" HasShadow="True">
@@ -27,7 +61,7 @@
                                         </Border>
                                         <Label Grid.Column="1"
                                                Text="Descubrí todos los productos disponibles"
-                                               TextColor="Gray"
+                                               TextColor="#757575"
                                                VerticalOptions="Center" />
                                     </Grid>
                                     <CollectionView ItemsSource="{Binding Productos}"

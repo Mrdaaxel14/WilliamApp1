@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +22,7 @@ namespace WilliamApp.ViewModels
     {
         private readonly ProductoService productoService;
         private bool isBusy;
+        private string mensajeEstado = string.Empty;
 
         public ObservableCollection<CategoriaConProductos> Categorias { get; } = new();
 
@@ -38,6 +41,21 @@ namespace WilliamApp.ViewModels
             }
         }
 
+        public string MensajeEstado
+        {
+            get => mensajeEstado;
+            set
+            {
+                if (mensajeEstado == value)
+                    return;
+
+                mensajeEstado = value;
+                OnPropertyChanged(nameof(MensajeEstado));
+            }
+        }
+
+        public bool TieneProductos => Categorias.Any();
+
         public CatalogoViewModel()
         {
             productoService = new ProductoService();
@@ -51,33 +69,52 @@ namespace WilliamApp.ViewModels
                 return;
 
             IsBusy = true;
+            MensajeEstado = "Cargando productos...";
 
             try
             {
-                var productos = await productoService.ObtenerProductos();
+                var productos = await productoService.ObtenerProductos() ?? new List<Producto>();
+
+                MensajeEstado = productos.Any()
+                    ? string.Empty
+                    : "No hay productos disponibles en este momento.";
+
+                ConstruirCategorias(productos);
+            }
+            catch (Exception)
+            {
+                MensajeEstado = "No pudimos conectarnos al servidor. Desliza hacia abajo para reintentar.";
                 Categorias.Clear();
-
-                var grupos = productos
-                    .Where(p => p != null)
-                    .GroupBy(p => p.oCategoria?.IdCategoria ?? p.IdCategoria)
-                    .Select(g => new CategoriaConProductos
-                    {
-                        Categoria = g.First().oCategoria ?? new Categoria
-                        {
-                            IdCategoria = g.Key,
-                            Descripcion = g.First().oCategoria?.Descripcion ?? "Sin categoría"
-                        },
-                        Productos = new ObservableCollection<Producto>(g.OrderBy(p => p.Descripcion))
-                    })
-                    .OrderBy(c => c.Categoria.Descripcion);
-
-                foreach (var grupo in grupos)
-                    Categorias.Add(grupo);
             }
             finally
             {
                 IsBusy = false;
+                OnPropertyChanged(nameof(TieneProductos));
             }
+        }
+
+        private void ConstruirCategorias(IEnumerable<Producto> productos)
+        {
+            Categorias.Clear();
+
+            var grupos = productos
+                .Where(p => p != null)
+                .GroupBy(p => p.oCategoria?.IdCategoria ?? p.IdCategoria)
+                .Select(g => new CategoriaConProductos
+                {
+                    Categoria = g.First().oCategoria ?? new Categoria
+                    {
+                        IdCategoria = g.Key,
+                        Descripcion = g.First().oCategoria?.Descripcion ?? "Sin categoría",
+                    },
+                    Productos = new ObservableCollection<Producto>(g.OrderBy(p => p.Descripcion))
+                })
+                .OrderBy(c => c.Categoria.Descripcion);
+
+            foreach (var grupo in grupos)
+                Categorias.Add(grupo);
+
+            OnPropertyChanged(nameof(TieneProductos));
         }
 
         protected void OnPropertyChanged(string name)
