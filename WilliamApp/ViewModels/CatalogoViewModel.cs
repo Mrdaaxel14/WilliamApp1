@@ -58,11 +58,15 @@ namespace WilliamApp.ViewModels
                 Categorias.Clear();
 
                 var grupos = productos
-                    .Where(p => p.oCategoria != null)
-                    .GroupBy(p => p.oCategoria.IdCategoria)
+                    .Where(p => p != null)
+                    .GroupBy(p => p.oCategoria?.IdCategoria ?? p.IdCategoria)
                     .Select(g => new CategoriaConProductos
                     {
-                        Categoria = g.First().oCategoria,
+                        Categoria = g.First().oCategoria ?? new Categoria
+                        {
+                            IdCategoria = g.Key,
+                            Descripcion = g.First().oCategoria?.Descripcion ?? "Sin categoría"
+                        },
                         Productos = new ObservableCollection<Producto>(g.OrderBy(p => p.Descripcion))
                     })
                     .OrderBy(c => c.Categoria.Descripcion);

@@ -23,7 +23,7 @@
                                                 StrokeShape="RoundRectangle 12"
                                                 Padding="8"
                                                 BackgroundColor="#FFF9C4">
-                                            <Label Text="{Binding Categoria.Descripcion}" FontAttributes="Bold" />
+                                            <Label Text="{Binding NombreCategoria}" FontAttributes="Bold" />
                                         </Border>
                                         <Label Grid.Column="1"
                                                Text="Descubrí todos los productos disponibles"
@@ -31,23 +31,27 @@
                                                VerticalOptions="Center" />
                                     </Grid>
                                     <CollectionView ItemsSource="{Binding Productos}"
-                                                    SelectionMode="Single"
-                                                    SelectionChanged="OnProductoSeleccionado"
-                                                    ItemsLayout="VerticalList">
+                                                        SelectionMode="Single"
+                                                        SelectionChanged="OnProductoSeleccionado"
+                                                        ItemsLayout="VerticalList">
                                         <CollectionView.ItemTemplate>
                                             <DataTemplate>
                                                 <Frame BorderColor="#E0E0E0" CornerRadius="10" Padding="10" Margin="0,4">
                                                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
                                                         <VerticalStackLayout Spacing="2">
-                                                            <Label Text="{Binding Descripcion}" FontSize="16" FontAttributes="Bold" />
+                                                            <Label Text="{Binding Descripcion}"
+                                                                       FontSize="16"
+                                                                       FontAttributes="Bold" />
                                                             <Label Text="{Binding Marca}" TextColor="#616161" />
-                                                            <Label Text="{Binding Precio, StringFormat='${0:F2}'}" TextColor="#2E7D32" FontAttributes="Bold" />
+                                                            <Label Text="{Binding Precio, StringFormat='${0:F2}'}"
+                                                                       TextColor="#2E7D32"
+                                                                       FontAttributes="Bold" />
                                                         </VerticalStackLayout>
                                                         <Label Text="⟩"
-                                                               FontSize="24"
-                                                               TextColor="#FFD600"
-                                                               VerticalOptions="Center"
-                                                               HorizontalOptions="End" />
+                                                                   FontSize="24"
+                                                                   TextColor="#FFD600"
+                                                                   VerticalOptions="Center"
+                                                                   HorizontalOptions="End" />
                                                     </Grid>
                                                 </Frame>
                                             </DataTemplate>
