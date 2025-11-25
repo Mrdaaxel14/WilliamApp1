@@ -40,6 +40,7 @@
                                 <VerticalStackLayout>
                                     <!-- Nombre Categoría -->
                                     <Label Text="{Binding NombreCategoria}" FontAttributes="Bold" FontSize="20"/>
+                                    <Label Text="{Binding DescripcionCategoria}" FontSize="14" TextColor="#616161" />
                                     <!-- Productos de la categoría -->
                                     <CollectionView ItemsSource="{Binding Productos}" SelectionMode="Single"
                         SelectionChanged="OnProductoSeleccionado">

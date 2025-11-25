@@ -16,6 +16,7 @@ namespace WilliamApp.ViewModels
         public Categoria Categoria { get; set; }
         public ObservableCollection<Producto> Productos { get; set; } = new();
         public string NombreCategoria => Categoria?.Descripcion ?? "Categoría";
+        public string DescripcionCategoria => Categoria?.Descripcion ?? "Sin descripción";
     }
 
     public class CatalogoViewModel : INotifyPropertyChanged
@@ -112,7 +113,13 @@ namespace WilliamApp.ViewModels
                 {
                     Categoria = cat,
                     Productos = new ObservableCollection<Producto>(
-                        productos.Where(p => p.IdCategoria == cat.IdCategoria)
+                        productos
+                            .Where(p => p.IdCategoria == cat.IdCategoria)
+                            .Select(p =>
+                            {
+                                p.oCategoria ??= cat;
+                                return p;
+                            })
                     )
                 })
                 .Where(g => g.Productos.Any())
