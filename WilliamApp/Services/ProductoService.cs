@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using WilliamApp.Models;
+using Microsoft.Maui.Controls;
 
 namespace WilliamApp.Services
 {
@@ -12,15 +9,19 @@ namespace WilliamApp.Services
     {
         public async Task<List<Producto>> ObtenerProductos()
         {
-            var apiResp = await GetAsync<ApiResponse<List<Producto>>>("producto/lista");
-            return apiResp.response;
+            try
+            {
+                // Endpoint exacto según tu backend
+                var productos = await GetAsync<List<Producto>>("producto/lista");
+                // DEBUG opcional: mostrar cantidad de productos recibidos
+                await Application.Current.MainPage.DisplayAlert("Debug", $"Productos recibidos: {productos?.Count ?? 0}", "OK");
+                return productos;
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("DebugError", $"Ex: {ex.Message}", "OK");
+                return new List<Producto>();
+            }
         }
     }
-
-    public class ApiResponse<T>
-    {
-        public string mensaje { get; set; }
-        public T response { get; set; }
-    }
 }
-

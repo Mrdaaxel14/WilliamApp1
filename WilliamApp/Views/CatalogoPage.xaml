@@ -34,58 +34,25 @@
                 </Frame>
 
                 <CollectionView ItemsSource="{Binding Categorias}">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.EmptyView>
-                        <VerticalStackLayout Padding="24" Spacing="12" HorizontalOptions="Center" VerticalOptions="Center">
-                            <Label Text="{Binding MensajeEstado}" TextColor="#616161" HorizontalOptions="Center" />
-                            <Button Text="Reintentar"
-                                    Command="{Binding RecargarCommand}"
-                                    HorizontalOptions="Center"
-                                    BackgroundColor="#FFD600"
-                                    TextColor="Black"
-                                    IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}" />
-                        </VerticalStackLayout>
-                    </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame BorderColor="#FFD600" CornerRadius="12" Padding="12" HasShadow="True">
-                                <VerticalStackLayout Spacing="8">
-                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
-                                        <Border Stroke="#FFD600"
-                                                StrokeShape="RoundRectangle 12"
-                                                Padding="8"
-                                                BackgroundColor="#FFF9C4">
-                                            <Label Text="{Binding NombreCategoria}" FontAttributes="Bold" />
-                                        </Border>
-                                        <Label Grid.Column="1"
-                                               Text="Descubrí todos los productos disponibles"
-                                               TextColor="#757575"
-                                               VerticalOptions="Center" />
-                                    </Grid>
-                                    <CollectionView ItemsSource="{Binding Productos}"
-                                                        SelectionMode="Single"
-                                                        SelectionChanged="OnProductoSeleccionado"
-                                                        ItemsLayout="VerticalList">
+                            <Frame>
+                                <VerticalStackLayout>
+                                    <!-- Nombre Categoría -->
+                                    <Label Text="{Binding NombreCategoria}" FontAttributes="Bold" FontSize="20"/>
+                                    <!-- Productos de la categoría -->
+                                    <CollectionView ItemsSource="{Binding Productos}" SelectionMode="Single"
+                        SelectionChanged="OnProductoSeleccionado">
                                         <CollectionView.ItemTemplate>
                                             <DataTemplate>
-                                                <Frame BorderColor="#E0E0E0" CornerRadius="10" Padding="10" Margin="0,4">
-                                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                                                        <VerticalStackLayout Spacing="2">
-                                                            <Label Text="{Binding Descripcion}"
-                                                                       FontSize="16"
-                                                                       FontAttributes="Bold" />
-                                                            <Label Text="{Binding Marca}" TextColor="#616161" />
-                                                            <Label Text="{Binding Precio, StringFormat='${0:F2}'}"
-                                                                       TextColor="#2E7D32"
-                                                                       FontAttributes="Bold" />
+                                                <Frame BorderColor="#E0E0E0" CornerRadius="10" Padding="10">
+                                                    <Grid ColumnDefinitions="*,Auto">
+                                                        <VerticalStackLayout>
+                                                            <Label Text="{Binding Descripcion}" FontAttributes="Bold"/>
+                                                            <Label Text="{Binding Marca}" />
+                                                            <Label Text="{Binding Precio, StringFormat='${0:F2}'}" />
                                                         </VerticalStackLayout>
-                                                        <Label Text="⟩"
-                                                                   FontSize="24"
-                                                                   TextColor="#FFD600"
-                                                                   VerticalOptions="Center"
-                                                                   HorizontalOptions="End" />
+                                                        <Label Text="⟩" FontSize="20" VerticalOptions="Center" HorizontalOptions="End"/>
                                                     </Grid>
                                                 </Frame>
                                             </DataTemplate>

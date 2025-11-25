@@ -2,6 +2,10 @@ using Microsoft.Maui.Controls;
 using WilliamApp.Models;
 using WilliamApp.ViewModels;
 
+using Microsoft.Maui.Controls;
+using WilliamApp.Models;
+using WilliamApp.ViewModels;
+
 namespace WilliamApp.Views
 {
     public partial class DetalleProductoPage : ContentPage

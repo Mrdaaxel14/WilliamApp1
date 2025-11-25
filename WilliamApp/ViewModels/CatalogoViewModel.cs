@@ -21,11 +21,10 @@ namespace WilliamApp.ViewModels
     public class CatalogoViewModel : INotifyPropertyChanged
     {
         private readonly ProductoService productoService;
+        private readonly CategoriaService categoriaService;
         private bool isBusy;
         private string mensajeEstado = string.Empty;
-
         public ObservableCollection<CategoriaConProductos> Categorias { get; } = new();
-
         public ICommand RecargarCommand { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -53,12 +52,12 @@ namespace WilliamApp.ViewModels
                 OnPropertyChanged(nameof(MensajeEstado));
             }
         }
-
         public bool TieneProductos => Categorias.Any();
 
         public CatalogoViewModel()
         {
             productoService = new ProductoService();
+            categoriaService = new CategoriaService();
             RecargarCommand = new Command(async () => await CargarCatalogo());
             _ = CargarCatalogo();
         }
@@ -74,17 +73,28 @@ namespace WilliamApp.ViewModels
             try
             {
                 var productos = await productoService.ObtenerProductos() ?? new List<Producto>();
+                var categorias = await categoriaService.ObtenerCategorias() ?? new List<Categoria>();
 
                 MensajeEstado = productos.Any()
                     ? string.Empty
                     : "No hay productos disponibles en este momento.";
 
-                ConstruirCategorias(productos);
+                ConstruirCategorias(productos, categorias);
+
+                // DEBUG: Mostrar cuántos productos y categorías se están mostrando
+                await Application.Current.MainPage.DisplayAlert(
+                    "Debug",
+                    $"CargarCatalogo:\nProductos={productos.Count}\nCategorias={Categorias.Count}",
+                    "OK");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MensajeEstado = "No pudimos conectarnos al servidor. Desliza hacia abajo para reintentar.";
                 Categorias.Clear();
+                await Application.Current.MainPage.DisplayAlert(
+                    "DebugError",
+                    $"Ex: {ex.Message}",
+                    "OK");
             }
             finally
             {
@@ -93,23 +103,20 @@ namespace WilliamApp.ViewModels
             }
         }
 
-        private void ConstruirCategorias(IEnumerable<Producto> productos)
+        private void ConstruirCategorias(IEnumerable<Producto> productos, IEnumerable<Categoria> categorias)
         {
             Categorias.Clear();
 
-            var grupos = productos
-                .Where(p => p != null)
-                .GroupBy(p => p.oCategoria?.IdCategoria ?? p.IdCategoria)
-                .Select(g => new CategoriaConProductos
+            var grupos = categorias
+                .Select(cat => new CategoriaConProductos
                 {
-                    Categoria = g.First().oCategoria ?? new Categoria
-                    {
-                        IdCategoria = g.Key,
-                        Descripcion = g.First().oCategoria?.Descripcion ?? "Sin categoría",
-                    },
-                    Productos = new ObservableCollection<Producto>(g.OrderBy(p => p.Descripcion))
+                    Categoria = cat,
+                    Productos = new ObservableCollection<Producto>(
+                        productos.Where(p => p.IdCategoria == cat.IdCategoria)
+                    )
                 })
-                .OrderBy(c => c.Categoria.Descripcion);
+                .Where(g => g.Productos.Any())
+                .OrderBy(g => g.Categoria.Descripcion);
 
             foreach (var grupo in grupos)
                 Categorias.Add(grupo);
