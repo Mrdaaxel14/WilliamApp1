@@ -1,6 +1,7 @@
 using Microsoft.Maui.Controls;
 using WilliamApp.Models;
 using WilliamApp.ViewModels;
+using System.Collections.Generic;
 
 namespace WilliamApp.Views
 {
@@ -12,12 +13,15 @@ namespace WilliamApp.Views
             BindingContext = new CatalogoViewModel();
         }
 
-        private async void OnProductoSeleccionado(object sender, SelectionChangedEventArgs e)
+        // Ya no usamos SelectionChanged, ahora Tap
+        private async void OnProductoTapped(object sender, TappedEventArgs e)
         {
-            if (e.CurrentSelection.FirstOrDefault() is Producto producto)
+            if (sender is Frame frame && frame.BindingContext is Producto producto)
             {
-                await Navigation.PushAsync(new DetalleProductoPage(producto));
-                ((CollectionView)sender).SelectedItem = null;
+                await Shell.Current.GoToAsync(nameof(DetalleProductoPage), new Dictionary<string, object>
+                {
+                    { "producto", producto }
+                });
             }
         }
     }

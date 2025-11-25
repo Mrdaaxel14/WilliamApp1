@@ -2,10 +2,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WilliamApp.Views.CatalogoPage"
+             x:Name="CatalogoPageRoot"
              Title="Catálogo">
     <RefreshView Command="{Binding RecargarCommand}" IsRefreshing="{Binding IsBusy}">
         <ScrollView>
             <VerticalStackLayout Padding="16" Spacing="16">
+
                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8" VerticalOptions="Center">
                     <VerticalStackLayout Spacing="2">
                         <Label Text="Explorá nuestro catálogo"
@@ -33,27 +35,34 @@
                     </VerticalStackLayout>
                 </Frame>
 
+                <!-- Categorías -->
                 <CollectionView ItemsSource="{Binding Categorias}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame>
-                                <VerticalStackLayout>
-                                    <!-- Nombre Categoría -->
+                            <Frame Padding="10" BorderColor="#E0E0E0" CornerRadius="12">
+                                <VerticalStackLayout Spacing="6">
                                     <Label Text="{Binding NombreCategoria}" FontAttributes="Bold" FontSize="20"/>
                                     <Label Text="{Binding DescripcionCategoria}" FontSize="14" TextColor="#616161" />
+
                                     <!-- Productos de la categoría -->
-                                    <CollectionView ItemsSource="{Binding Productos}" SelectionMode="Single"
-                        SelectionChanged="OnProductoSeleccionado">
+                                    <CollectionView ItemsSource="{Binding Productos}">
                                         <CollectionView.ItemTemplate>
                                             <DataTemplate>
                                                 <Frame BorderColor="#E0E0E0" CornerRadius="10" Padding="10">
+                                                    <Frame.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="OnProductoTapped" />
+                                                    </Frame.GestureRecognizers>
                                                     <Grid ColumnDefinitions="*,Auto">
                                                         <VerticalStackLayout>
                                                             <Label Text="{Binding Descripcion}" FontAttributes="Bold"/>
                                                             <Label Text="{Binding Marca}" />
                                                             <Label Text="{Binding Precio, StringFormat='${0:F2}'}" />
                                                         </VerticalStackLayout>
-                                                        <Label Text="⟩" FontSize="20" VerticalOptions="Center" HorizontalOptions="End"/>
+                                                        <Label Text="⟩"
+                                                               FontSize="20"
+                                                               VerticalOptions="Center"
+                                                               HorizontalOptions="End"
+                                                               TextColor="#9E9E9E" />
                                                     </Grid>
                                                 </Frame>
                                             </DataTemplate>
@@ -64,6 +73,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+
             </VerticalStackLayout>
         </ScrollView>
     </RefreshView>
