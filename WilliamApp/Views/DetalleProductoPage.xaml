@@ -2,30 +2,44 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WilliamApp.Views.DetalleProductoPage"
-             Title="Detalle del producto">
+             Title="{Binding Producto.Descripcion}">
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
             <Label Text="{Binding Producto.Descripcion}"
                    FontAttributes="Bold"
-                   FontSize="24" />
+                   FontSize="26" />
 
-            <Label Text="{Binding Producto.Marca}" />
-            <Label Text="{Binding Producto.oCategoria.Descripcion}" />
+            <Label Text="{Binding Producto.Marca}"
+                   FontSize="16"
+                   TextColor="#616161" />
+
+            <Label Text="{Binding Producto.oCategoria.Descripcion}"
+                   FontSize="14"
+                   TextColor="#757575" />
+
             <Label Text="{Binding Producto.Precio, StringFormat='Precio: ${0:F2}'}"
-                   FontSize="20"
-                   TextColor="Green" />
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   TextColor="#2E7D32" />
 
-            <Stepper Minimum="1"
-                     Maximum="50"
-                     Increment="1"
-                     Value="{Binding Cantidad}"
-                     HorizontalOptions="Start" />
-            <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}" />
+            <Grid ColumnDefinitions="Auto,Auto" ColumnSpacing="12" VerticalOptions="Center">
+                <Label Text="Cantidad:" FontSize="16" VerticalOptions="Center" />
+                <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                    <Stepper Minimum="1"
+                             Maximum="50"
+                             Increment="1"
+                             Value="{Binding Cantidad}" />
+                    <Label Text="{Binding Cantidad}" FontSize="16" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Grid>
 
             <Button Text="Agregar al carrito"
+                    Command="{Binding AgregarAlCarritoCommand}"
                     BackgroundColor="#FFD600"
                     TextColor="Black"
-                    Command="{Binding AgregarAlCarritoCommand}" />
+                    CornerRadius="12"
+                    FontAttributes="Bold"
+                    HeightRequest="50" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

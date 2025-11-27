@@ -2,24 +2,25 @@ using Microsoft.Maui.Controls;
 using WilliamApp.Models;
 using WilliamApp.ViewModels;
 
-using Microsoft.Maui.Controls;
-using WilliamApp.Models;
-using WilliamApp.ViewModels;
-
 namespace WilliamApp.Views
 {
+    [QueryProperty(nameof(Producto), "producto")]
     public partial class DetalleProductoPage : ContentPage
     {
-        public DetalleProductoPage(Producto producto)
+        public Producto Producto
+        {
+            get => ((ProductoDetalleViewModel)BindingContext).Producto;
+            set
+            {
+                ((ProductoDetalleViewModel)BindingContext).Producto = value;
+                Title = value?.Descripcion;
+            }
+        }
+
+        public DetalleProductoPage()
         {
             InitializeComponent();
-
-            var vm = new ProductoDetalleViewModel
-            {
-                Producto = producto
-            };
-
-            BindingContext = vm;
+            BindingContext = new ProductoDetalleViewModel();
         }
     }
 }

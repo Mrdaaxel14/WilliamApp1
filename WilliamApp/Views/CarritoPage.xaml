@@ -4,19 +4,31 @@
              Title="Mi Carrito">
 
     <VerticalStackLayout Padding="10" Spacing="10">
-        <CollectionView ItemsSource="{Binding Items}">
+        <CollectionView ItemsSource="{Binding Items}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnCarritoItemSeleccionado">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="10">
-                        <VerticalStackLayout>
-
-                            <Label Text="{Binding Producto.Descripcion}"
-                                   FontAttributes="Bold" />
-
-                            <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}"/>
-                            <Label Text="{Binding Producto.Precio, StringFormat='${0:F2}'}"/>
-
-                        </VerticalStackLayout>
+                    <Frame Padding="10" BorderColor="#E0E0E0" CornerRadius="12">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Producto.Descripcion}"
+                                       FontAttributes="Bold"
+                                       FontSize="16" />
+                                <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}"
+                                       FontSize="13"
+                                       TextColor="#616161"/>
+                                <Label Text="{Binding Producto.Precio, StringFormat='${0:F2}'}"
+                                       FontSize="14"
+                                       TextColor="#2E7D32"/>
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1"
+                                   Text="?"
+                                   FontSize="22"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="End"
+                                   TextColor="#9E9E9E" />
+                        </Grid>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
