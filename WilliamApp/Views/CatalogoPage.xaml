@@ -42,7 +42,7 @@
                     </VerticalStackLayout>
                 </Frame>
 
-                <!-- Categorías con productos -->
+                <!-- Categorías con productos - OPTIMIZADO -->
                 <CollectionView ItemsSource="{Binding Categorias}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -59,7 +59,7 @@
                                            FontSize="20"
                                            TextColor="#212121"/>
 
-                                    <!-- Grid de productos (2 columnas) -->
+                                    <!-- Grid de productos (2 columnas) - OPTIMIZADO -->
                                     <CollectionView ItemsSource="{Binding Productos}">
                                         <CollectionView.ItemsLayout>
                                             <GridItemsLayout Orientation="Vertical" 
@@ -80,15 +80,17 @@
                                                     </Frame.GestureRecognizers>
 
                                                     <Grid RowDefinitions="180,Auto">
-                                                        <!-- Imagen del producto -->
+                                                        <!-- Imagen del producto - OPTIMIZADA -->
                                                         <Frame Grid.Row="0" 
                                                                Padding="0" 
                                                                CornerRadius="12"
                                                                HasShadow="False"
-                                                               BackgroundColor="#F5F5F5">
+                                                               BackgroundColor="#F5F5F5"
+                                                               InputTransparent="True">
                                                             <Image Source="{Binding ImagenMostrar}"
                                                                    Aspect="AspectFill"
-                                                                   HeightRequest="180"/>
+                                                                   HeightRequest="180"
+                                                                   InputTransparent="True"/>
                                                         </Frame>
 
                                                         <!-- Información del producto -->

@@ -25,6 +25,13 @@ namespace WilliamApp.ViewModels
         private readonly CategoriaService categoriaService;
         private bool isBusy;
         private string mensajeEstado = string.Empty;
+
+        // Caché para evitar recargas innecesarias
+        private static List<Producto> productosCache;
+        private static List<Categoria> categoriasCache;
+        private static DateTime ultimaCarga = DateTime.MinValue;
+        private static readonly TimeSpan TiempoCache = TimeSpan.FromMinutes(5);
+
         public ObservableCollection<CategoriaConProductos> Categorias { get; } = new();
         public ICommand RecargarCommand { get; }
 
@@ -46,56 +53,82 @@ namespace WilliamApp.ViewModels
             get => mensajeEstado;
             set
             {
-                if (mensajeEstado == value)
-                    return;
-
+                if (mensajeEstado == value) return;
                 mensajeEstado = value;
                 OnPropertyChanged(nameof(MensajeEstado));
             }
         }
+
         public bool TieneProductos => Categorias.Any();
 
         public CatalogoViewModel()
         {
             productoService = new ProductoService();
             categoriaService = new CategoriaService();
-            RecargarCommand = new Command(async () => await CargarCatalogo());
-            _ = CargarCatalogo();
+            RecargarCommand = new Command(async () => await CargarCatalogo(forzarRecarga: true));
+
+            // Cargar inmediatamente si hay caché, sino cargar del servidor
+            if (EsCacheValido())
+            {
+                ConstruirCategorias(productosCache, categoriasCache);
+                OnPropertyChanged(nameof(TieneProductos));
+            }
+            else
+            {
+                _ = CargarCatalogo();
+            }
         }
 
-        private async Task CargarCatalogo()
+        private bool EsCacheValido()
         {
-            if (IsBusy)
+            return productosCache != null &&
+                   categoriasCache != null &&
+                   (DateTime.Now - ultimaCarga) < TiempoCache;
+        }
+
+        private async Task CargarCatalogo(bool forzarRecarga = false)
+        {
+            if (IsBusy) return;
+
+            // Si el caché es válido y no es una recarga forzada, usar caché
+            if (!forzarRecarga && EsCacheValido())
+            {
+                ConstruirCategorias(productosCache, categoriasCache);
                 return;
+            }
 
             IsBusy = true;
             MensajeEstado = "Cargando productos...";
 
             try
             {
-                var productos = await productoService.ObtenerProductos() ?? new List<Producto>();
-                var categorias = await categoriaService.ObtenerCategorias() ?? new List<Categoria>();
+                // Cargar en paralelo para mayor velocidad
+                var productosTask = productoService.ObtenerProductos();
+                var categoriasTask = categoriaService.ObtenerCategorias();
+
+                await Task.WhenAll(productosTask, categoriasTask);
+
+                var productos = await productosTask ?? new List<Producto>();
+                var categorias = await categoriasTask ?? new List<Categoria>();
+
+                // Actualizar caché
+                productosCache = productos;
+                categoriasCache = categorias;
+                ultimaCarga = DateTime.Now;
 
                 MensajeEstado = productos.Any()
                     ? string.Empty
                     : "No hay productos disponibles en este momento.";
 
                 ConstruirCategorias(productos, categorias);
-
-                // DEBUG: Mostrar cuántos productos y categorías se están mostrando
-                await Application.Current.MainPage.DisplayAlert(
-                    "Debug",
-                    $"CargarCatalogo:\nProductos={productos.Count}\nCategorias={Categorias.Count}",
-                    "OK");
             }
             catch (Exception ex)
             {
                 MensajeEstado = "No pudimos conectarnos al servidor. Desliza hacia abajo para reintentar.";
                 Categorias.Clear();
-                await Application.Current.MainPage.DisplayAlert(
-                    "DebugError",
-                    $"Ex: {ex.Message}",
-                    "OK");
+
+                // Log para debugging (sin bloquear UI)
+                Console.WriteLine($"Error al cargar catálogo: {ex.Message}");
             }
             finally
             {
