@@ -1,47 +1,139 @@
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WilliamApp.Views.CarritoPage"
-             Title="Mi Carrito">
+             Title="Mi Carrito"
+             BackgroundColor="#F5F5F5">
 
-    <VerticalStackLayout Padding="10" Spacing="10">
-        <CollectionView ItemsSource="{Binding Items}"
-                        SelectionMode="Single"
-                        SelectionChanged="OnCarritoItemSeleccionado">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Padding="10" BorderColor="#E0E0E0" CornerRadius="12">
-                        <Grid ColumnDefinitions="*,Auto">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding Producto.Descripcion}"
-                                       FontAttributes="Bold"
-                                       FontSize="16" />
-                                <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}"
-                                       FontSize="13"
-                                       TextColor="#616161"/>
-                                <Label Text="{Binding Producto.Precio, StringFormat='${0:F2}'}"
-                                       FontSize="14"
-                                       TextColor="#2E7D32"/>
-                            </VerticalStackLayout>
-                            <Label Grid.Column="1"
-                                   Text="?"
-                                   FontSize="22"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="End"
-                                   TextColor="#9E9E9E" />
-                        </Grid>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+    <Grid RowDefinitions="*,Auto">
+        <!-- Lista de items -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="16" Spacing="12">
 
-        <Grid ColumnDefinitions="*,Auto" Padding="10,0">
-            <Label Text="Total" FontAttributes="Bold" />
-            <Label Grid.Column="1" Text="{Binding Total, StringFormat='${0:F2}'}" />
-        </Grid>
+                <!-- Header -->
+                <VerticalStackLayout Spacing="4" Margin="0,0,0,8">
+                    <Label Text="Tu carrito de compras"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="Black" />
+                    <Label Text="{Binding Items.Count, StringFormat='{0} producto(s) en tu carrito'}"
+                           FontSize="14"
+                           TextColor="#616161" />
+                </VerticalStackLayout>
 
-        <Button Text="Confirmar pedido"
-                BackgroundColor="#FFD600"
-                TextColor="Black"
-                Command="{Binding IrAConfirmarCommand}" />
-    </VerticalStackLayout>
+                <!-- Items del carrito -->
+                <CollectionView ItemsSource="{Binding Items}"
+                                SelectionMode="Single"
+                                SelectionChanged="OnCarritoItemSeleccionado">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout Padding="32" Spacing="12" VerticalOptions="Center">
+                            <Label Text="🛒"
+                                   FontSize="64"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="Tu carrito está vacío"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center"/>
+                            <Label Text="Agrega productos desde el catálogo"
+                                   FontSize="14"
+                                   TextColor="#757575"
+                                   HorizontalTextAlignment="Center"/>
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="12" 
+                                   Margin="0,0,0,8"
+                                   BackgroundColor="White"
+                                   BorderColor="#E0E0E0" 
+                                   CornerRadius="12"
+                                   HasShadow="False">
+                                <Grid ColumnDefinitions="100,*,Auto" ColumnSpacing="12">
+
+                                    <!-- Imagen del producto -->
+                                    <Frame Grid.Column="0" 
+                                           Padding="0"
+                                           CornerRadius="8"
+                                           HasShadow="False"
+                                           BackgroundColor="#F5F5F5">
+                                        <Image Source="{Binding Producto.ImagenMostrar}"
+                                               Aspect="AspectFill"
+                                               HeightRequest="100"
+                                               WidthRequest="100"/>
+                                    </Frame>
+
+                                    <!-- Información del producto -->
+                                    <VerticalStackLayout Grid.Column="1" 
+                                                       Spacing="4"
+                                                       VerticalOptions="Center">
+                                        <Label Text="{Binding Producto.Descripcion}"
+                                               FontAttributes="Bold"
+                                               FontSize="16"
+                                               LineBreakMode="TailTruncation"
+                                               MaxLines="2"/>
+                                        <Label Text="{Binding Producto.Marca}"
+                                               FontSize="13"
+                                               TextColor="#757575"
+                                               LineBreakMode="TailTruncation"/>
+                                        <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}"
+                                               FontSize="13"
+                                               TextColor="#616161"
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding Producto.Precio, StringFormat='${0:N2} c/u'}"
+                                               FontSize="14"
+                                               TextColor="#2E7D32"
+                                               FontAttributes="Bold"/>
+                                    </VerticalStackLayout>
+
+                                    <!-- Flecha para ir al detalle -->
+                                    <Label Grid.Column="2"
+                                           Text="›"
+                                           FontSize="28"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="End"
+                                           TextColor="#9E9E9E" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Footer con total y botón -->
+        <Frame Grid.Row="1"
+               Padding="16"
+               CornerRadius="24"
+               BackgroundColor="White"
+               HasShadow="True"
+               BorderColor="Transparent">
+            <VerticalStackLayout Spacing="12">
+
+                <!-- Total -->
+                <Grid ColumnDefinitions="*,Auto" Padding="8,0">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Total a pagar" 
+                               FontSize="14"
+                               TextColor="#757575"/>
+                        <Label Text="{Binding Total, StringFormat='${0:N2}'}" 
+                               FontSize="28"
+                               FontAttributes="Bold"
+                               TextColor="#2E7D32"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Botón confirmar -->
+                <Button Text="Confirmar pedido"
+                        BackgroundColor="#FFD600"
+                        TextColor="Black"
+                        CornerRadius="12"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="50"
+                        Command="{Binding IrAConfirmarCommand}" />
+
+            </VerticalStackLayout>
+        </Frame>
+    </Grid>
 </ContentPage>

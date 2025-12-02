@@ -2,44 +2,145 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WilliamApp.Views.DetalleProductoPage"
-             Title="{Binding Producto.Descripcion}">
+             Title="{Binding Producto.Descripcion}"
+             BackgroundColor="#F5F5F5">
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <Label Text="{Binding Producto.Descripcion}"
-                   FontAttributes="Bold"
-                   FontSize="26" />
+        <VerticalStackLayout Spacing="0">
 
-            <Label Text="{Binding Producto.Marca}"
-                   FontSize="16"
-                   TextColor="#616161" />
+            <!-- Galería de imágenes -->
+            <Frame Padding="0" 
+                   CornerRadius="24"
+                   HasShadow="True"
+                   BackgroundColor="White">
+                <VerticalStackLayout Spacing="12">
+                    <!-- Imagen principal -->
+                    <CarouselView ItemsSource="{Binding ImagenesGaleria}"
+                                  HeightRequest="400"
+                                  IndicatorView="indicatorView"
+                                  PeekAreaInsets="0">
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="0" 
+                                       CornerRadius="0"
+                                       HasShadow="False"
+                                       BackgroundColor="#F5F5F5">
+                                    <Image Source="{Binding .}"
+                                           Aspect="AspectFill"/>
+                                </Frame>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
 
-            <Label Text="{Binding Producto.oCategoria.Descripcion}"
-                   FontSize="14"
-                   TextColor="#757575" />
+                    <!-- Indicadores de página -->
+                    <IndicatorView x:Name="indicatorView"
+                                   IndicatorColor="#E0E0E0"
+                                   SelectedIndicatorColor="#FFD600"
+                                   HorizontalOptions="Center"
+                                   Margin="0,0,0,12"/>
+                </VerticalStackLayout>
+            </Frame>
 
-            <Label Text="{Binding Producto.Precio, StringFormat='Precio: ${0:F2}'}"
-                   FontSize="22"
-                   FontAttributes="Bold"
-                   TextColor="#2E7D32" />
+            <!-- Información del producto -->
+            <VerticalStackLayout Padding="20" Spacing="16">
 
-            <Grid ColumnDefinitions="Auto,Auto" ColumnSpacing="12" VerticalOptions="Center">
-                <Label Text="Cantidad:" FontSize="16" VerticalOptions="Center" />
-                <HorizontalStackLayout Grid.Column="1" Spacing="10">
-                    <Stepper Minimum="1"
-                             Maximum="50"
-                             Increment="1"
-                             Value="{Binding Cantidad}" />
-                    <Label Text="{Binding Cantidad}" FontSize="16" VerticalOptions="Center" />
-                </HorizontalStackLayout>
-            </Grid>
+                <!-- Título y marca -->
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="{Binding Producto.Descripcion}"
+                           FontAttributes="Bold"
+                           FontSize="26"
+                           TextColor="#212121"/>
 
-            <Button Text="Agregar al carrito"
-                    Command="{Binding AgregarAlCarritoCommand}"
-                    BackgroundColor="#FFD600"
-                    TextColor="Black"
-                    CornerRadius="12"
-                    FontAttributes="Bold"
-                    HeightRequest="50" />
+                    <Label Text="{Binding Producto.Marca}"
+                           FontSize="16"
+                           TextColor="#757575" />
+
+                    <Label Text="{Binding Producto.oCategoria.Descripcion}"
+                           FontSize="14"
+                           TextColor="#9E9E9E" />
+                </VerticalStackLayout>
+
+                <!-- Precio -->
+                <Frame BackgroundColor="#E8F5E9" 
+                       BorderColor="#2E7D32"
+                       CornerRadius="12" 
+                       Padding="16"
+                       HasShadow="False">
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="Precio:" 
+                               FontSize="18"
+                               TextColor="#1B5E20"
+                               VerticalOptions="Center"/>
+                        <Label Text="{Binding Producto.Precio, StringFormat='${0:N2}'}"
+                               FontSize="28"
+                               FontAttributes="Bold"
+                               TextColor="#2E7D32"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <!-- Selector de cantidad -->
+                <Frame BackgroundColor="White"
+                       BorderColor="#E0E0E0"
+                       CornerRadius="12"
+                       Padding="16"
+                       HasShadow="False">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Cantidad" 
+                                   FontSize="16" 
+                                   FontAttributes="Bold"
+                                   TextColor="#212121"/>
+                            <Label Text="Selecciona la cantidad que deseas comprar"
+                                   FontSize="12"
+                                   TextColor="#757575"/>
+                        </VerticalStackLayout>
+
+                        <HorizontalStackLayout Grid.Column="1" 
+                                             Spacing="12"
+                                             VerticalOptions="Center">
+                            <Button Text="-"
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    CornerRadius="20"
+                                    FontSize="20"
+                                    FontAttributes="Bold"
+                                    BackgroundColor="#FFD600"
+                                    TextColor="Black"
+                                    Command="{Binding DisminuirCantidadCommand}"/>
+
+                            <Label Text="{Binding Cantidad}" 
+                                   FontSize="20" 
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"
+                                   WidthRequest="40"
+                                   HorizontalTextAlignment="Center"/>
+
+                            <Button Text="+"
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    CornerRadius="20"
+                                    FontSize="20"
+                                    FontAttributes="Bold"
+                                    BackgroundColor="#FFD600"
+                                    TextColor="Black"
+                                    Command="{Binding AumentarCantidadCommand}"/>
+                        </HorizontalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <!-- Botón agregar al carrito -->
+                <Button Text="Agregar al carrito"
+                        Command="{Binding AgregarAlCarritoCommand}"
+                        BackgroundColor="#FFD600"
+                        TextColor="Black"
+                        CornerRadius="12"
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        HeightRequest="56"
+                        Margin="0,16,0,0"/>
+
+            </VerticalStackLayout>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
