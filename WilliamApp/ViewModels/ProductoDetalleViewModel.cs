@@ -104,6 +104,9 @@ namespace WilliamApp.ViewModels
 
                 if (ok)
                 {
+                    // ✅ ENVIAR MENSAJE PARA ACTUALIZAR CARRITO
+                    MessagingCenter.Send(this, "CarritoActualizado");
+
                     await Application.Current.MainPage.DisplayAlert(
                         "¡Agregado!",
                         $"{Cantidad} unidad(es) de {Producto.Descripcion} agregadas al carrito",

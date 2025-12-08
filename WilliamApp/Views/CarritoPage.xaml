@@ -1,4 +1,5 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WilliamApp.Views.CarritoPage"
              Title="Mi Carrito"
@@ -21,9 +22,7 @@
                 </VerticalStackLayout>
 
                 <!-- Items del carrito -->
-                <CollectionView ItemsSource="{Binding Items}"
-                                SelectionMode="Single"
-                                SelectionChanged="OnCarritoItemSeleccionado">
+                <CollectionView ItemsSource="{Binding Items}">
                     <CollectionView.EmptyView>
                         <VerticalStackLayout Padding="32" Spacing="12" VerticalOptions="Center">
                             <Label Text="🛒"
@@ -48,18 +47,24 @@
                                    BorderColor="#E0E0E0" 
                                    CornerRadius="12"
                                    HasShadow="False">
-                                <Grid ColumnDefinitions="100,*,Auto" ColumnSpacing="12">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Tapped="OnCarritoItemTapped"
+                                        CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+                                <!-- ✅ NUEVO: Grid con columna extra para botón eliminar -->
+                                <Grid ColumnDefinitions="100,*,Auto,Auto" ColumnSpacing="12">
 
                                     <!-- Imagen del producto -->
-                                    <Frame Grid.Column="0" 
-                                           Padding="0"
-                                           CornerRadius="8"
-                                           HasShadow="False"
-                                           BackgroundColor="#F5F5F5">
+                                    <Frame Grid.Column="0"
+                                        Padding="0"
+                                        CornerRadius="8"
+                                        HasShadow="False"
+                                        BackgroundColor="#F5F5F5">
                                         <Image Source="{Binding Producto.ImagenMostrar}"
-                                               Aspect="AspectFill"
-                                               HeightRequest="100"
-                                               WidthRequest="100"/>
+                                                Aspect="AspectFill"
+                                                HeightRequest="100"
+                                                WidthRequest="100" />
                                     </Frame>
 
                                     <!-- Información del producto -->
@@ -85,13 +90,27 @@
                                                FontAttributes="Bold"/>
                                     </VerticalStackLayout>
 
-                                    <!-- Flecha para ir al detalle -->
-                                    <Label Grid.Column="2"
+                                    <!-- ✅ NUEVO: Botón eliminar -->
+                                    <Button Grid.Column="2"
+                                            Text="🗑️"
+                                            FontSize="20"
+                                            WidthRequest="50"
+                                            HeightRequest="50"
+                                            CornerRadius="25"
+                                            BackgroundColor="#FF5252"
+                                            TextColor="White"
+                                            VerticalOptions="Center"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EliminarItemCommand}"
+                                            CommandParameter="{Binding .}"/>
+
+                                    <!-- Flecha para ver detalle -->
+                                    <Label Grid.Column="3"
                                            Text="›"
                                            FontSize="28"
                                            VerticalOptions="Center"
                                            HorizontalOptions="End"
-                                           TextColor="#9E9E9E" />
+                                           TextColor="#9E9E9E">
+                                    </Label>
                                 </Grid>
                             </Frame>
                         </DataTemplate>

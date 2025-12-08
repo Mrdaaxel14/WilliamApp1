@@ -20,5 +20,19 @@ namespace WilliamApp.Services
             var resp = await GetAsync<ApiResponse<List<CarritoItem>>>("carrito/mis-items");
             return resp.response;
         }
+        // ✅ NUEVO: Método para eliminar del carrito
+        public async Task<bool> Eliminar(int idCarritoDetalle)
+        {
+            try
+            {
+                var response = await client.DeleteAsync($"carrito/eliminar/{idCarritoDetalle}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al eliminar del carrito: {ex.Message}");
+                return false;
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui.Controls;
 using WilliamApp.ViewModels;
 using WilliamApp.Models;
 using System.Collections.Generic;
@@ -7,22 +7,31 @@ namespace WilliamApp.Views
 {
     public partial class CarritoPage : ContentPage
     {
+        private CarritoViewModel _viewModel;
+
         public CarritoPage()
         {
             InitializeComponent();
-            BindingContext = new CarritoViewModel();
+            _viewModel = new CarritoViewModel();
+            BindingContext = _viewModel;
         }
 
-        private async void OnCarritoItemSeleccionado(object sender, SelectionChangedEventArgs e)
+        protected override async void OnAppearing()
         {
-            if (e.CurrentSelection.FirstOrDefault() is CarritoItem item && item.Producto != null)
+            base.OnAppearing();
+            await _viewModel.Recargar();
+        }
+
+        // ✅ MODIFICADO: Evento con CommandParameter
+        private async void OnCarritoItemTapped(object sender, TappedEventArgs e)
+        {
+            if (e.Parameter is CarritoItem item && item.Producto != null)
             {
                 await Shell.Current.GoToAsync(nameof(DetalleProductoPage), new Dictionary<string, object>
                 {
                     { "producto", item.Producto }
                 });
             }
-            ((CollectionView)sender).SelectedItem = null;
         }
     }
 }
