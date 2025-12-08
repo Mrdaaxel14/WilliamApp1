@@ -2,89 +2,70 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WilliamApp.Views.AgregarMetodoPagoPage"
-             Title="Agregar Método de Pago"
+             Title="Agregar método de pago"
              BackgroundColor="#F9F9F9">
 
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="20">
-            <Frame BackgroundColor="White" 
-                   Padding="20" 
-                   CornerRadius="12" 
-                   HasShadow="True">
-                <VerticalStackLayout Spacing="15">
-                    <Label Text="Nuevo Método de Pago"
+
+            <Frame BackgroundColor="White" Padding="20" CornerRadius="12" HasShadow="True">
+                <VerticalStackLayout Spacing="12">
+
+                    <Label Text="Nuevo método de pago"
                            FontAttributes="Bold"
-                           FontSize="22"
-                           HorizontalOptions="Center"
-                           TextColor="#101010" />
+                           FontSize="20" />
 
-                    <Label Text="Tipo de método *" 
-                           FontSize="14" />
-                    <Picker ItemsSource="{Binding TiposMetodoPago}"
-                            SelectedItem="{Binding TipoSeleccionado}"
-                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
+                    <Label Text="Tipo de método *" FontSize="14" TextColor="#616161" />
+                    <Picker SelectedItem="{Binding Metodo}"
+                            Title="Selecciona un tipo">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Tarjeta de Crédito</x:String>
+                                <x:String>Tarjeta de Débito</x:String>
+                                <x:String>MercadoPago</x:String>
+                                <x:String>Efectivo</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
 
-                    <Label Text="Alias (opcional)" 
-                           FontSize="14" />
-                    <Entry Text="{Binding Alias}" 
-                           Placeholder="Ej: Mi tarjeta personal"
-                           IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
+                    <Label Text="Titular" FontSize="14" TextColor="#616161" />
+                    <Entry Text="{Binding Titular}"
+                           Placeholder="Nombre del titular" />
 
-                    <Label Text="Nombre del Titular *" 
-                           FontSize="14" />
-                    <Entry Text="{Binding Titular}" 
-                           Placeholder="Ingrese el nombre del titular"
-                           IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
+                    <Label Text="Últimos 4 dígitos" FontSize="14" TextColor="#616161" />
+                    <Entry Text="{Binding Ultimos4}"
+                           Placeholder="1234"
+                           Keyboard="Numeric"
+                           MaxLength="4" />
 
-                    <!-- Campos solo para tarjetas -->
-                    <VerticalStackLayout Spacing="15" IsVisible="{Binding EsTarjeta}">
-                        <Label Text="Últimos 4 dígitos *" 
-                               FontSize="14" />
-                        <Entry Text="{Binding Ultimos4Digitos}" 
-                               Placeholder="1234"
-                               Keyboard="Numeric"
-                               MaxLength="4"
-                               IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
+                    <Label Text="Fecha de expiración" FontSize="14" TextColor="#616161" />
+                    <Entry Text="{Binding Expiracion}"
+                           Placeholder="MM/YY"
+                           MaxLength="5" />
 
-                        <Label Text="Fecha de Vencimiento (MM/YY) *" 
-                               FontSize="14" />
-                        <Entry Text="{Binding Vencimiento}" 
-                               Placeholder="12/25"
-                               MaxLength="5"
-                               IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
-                    </VerticalStackLayout>
-
-                    <Label Text="* Campos obligatorios" 
-                           FontSize="12" 
-                           TextColor="Gray"
-                           Margin="0,10,0,0" />
-
-                    <Button Text="Guardar"
-                            BackgroundColor="#FFD600"
-                            TextColor="Black"
-                            FontAttributes="Bold"
-                            HeightRequest="50"
-                            CornerRadius="10"
-                            Command="{Binding GuardarCommand}"
-                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
-                            Margin="0,10,0,0" />
-
-                    <Button Text="Cancelar"
-                            BackgroundColor="White"
-                            TextColor="Black"
-                            BorderColor="#E0E0E0"
-                            BorderWidth="1"
-                            HeightRequest="50"
-                            CornerRadius="10"
-                            Command="{Binding CancelarCommand}"
-                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
-
-                    <ActivityIndicator IsRunning="{Binding IsLoading}"
-                                       IsVisible="{Binding IsLoading}"
-                                       Color="#FFD600"
-                                       HorizontalOptions="Center" />
                 </VerticalStackLayout>
             </Frame>
+
+            <Button Text="Guardar"
+                    BackgroundColor="#FFD600"
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    CornerRadius="12"
+                    HeightRequest="50"
+                    Command="{Binding GuardarCommand}" />
+
+            <Button Text="Cancelar"
+                    BackgroundColor="#E0E0E0"
+                    TextColor="Black"
+                    CornerRadius="12"
+                    HeightRequest="50"
+                    Command="{Binding CancelarCommand}" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="#FFD600"
+                               HorizontalOptions="Center" />
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

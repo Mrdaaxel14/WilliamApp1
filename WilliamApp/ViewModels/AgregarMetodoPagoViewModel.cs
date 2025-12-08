@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -11,40 +12,19 @@ namespace WilliamApp.ViewModels
     public class AgregarMetodoPagoViewModel : INotifyPropertyChanged
     {
         private readonly ClienteService clienteService;
-        private const string VencimientoRegexPattern = @"^\d{2}/\d{2}$";
 
-        private string tipoSeleccionado;
-        private string alias;
+        private string metodo;
         private string titular;
-        private string ultimos4Digitos;
-        private string vencimiento;
-        private bool isLoading;
+        private string ultimos4;
+        private string expiracion;
+        private bool isBusy;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string[] TiposMetodoPago { get; } = new[]
+        public string Metodo
         {
-            "Tarjeta de Crédito",
-            "Tarjeta de Débito",
-            "MercadoPago",
-            "Efectivo"
-        };
-
-        public string TipoSeleccionado
-        {
-            get => tipoSeleccionado;
-            set
-            {
-                tipoSeleccionado = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(EsTarjeta));
-            }
-        }
-
-        public string Alias
-        {
-            get => alias;
-            set { alias = value; OnPropertyChanged(); }
+            get => metodo;
+            set { metodo = value; OnPropertyChanged(); }
         }
 
         public string Titular
@@ -53,25 +33,23 @@ namespace WilliamApp.ViewModels
             set { titular = value; OnPropertyChanged(); }
         }
 
-        public string Ultimos4Digitos
+        public string Ultimos4
         {
-            get => ultimos4Digitos;
-            set { ultimos4Digitos = value; OnPropertyChanged(); }
+            get => ultimos4;
+            set { ultimos4 = value; OnPropertyChanged(); }
         }
 
-        public string Vencimiento
+        public string Expiracion
         {
-            get => vencimiento;
-            set { vencimiento = value; OnPropertyChanged(); }
+            get => expiracion;
+            set { expiracion = value; OnPropertyChanged(); }
         }
 
-        public bool IsLoading
+        public bool IsBusy
         {
-            get => isLoading;
-            set { isLoading = value; OnPropertyChanged(); }
+            get => isBusy;
+            set { isBusy = value; OnPropertyChanged(); }
         }
-
-        public bool EsTarjeta => TipoSeleccionado == "Tarjeta de Crédito" || TipoSeleccionado == "Tarjeta de Débito";
 
         public ICommand GuardarCommand { get; }
         public ICommand CancelarCommand { get; }
@@ -81,81 +59,60 @@ namespace WilliamApp.ViewModels
             clienteService = new ClienteService();
             GuardarCommand = new Command(async () => await Guardar());
             CancelarCommand = new Command(async () => await Cancelar());
-            TipoSeleccionado = TiposMetodoPago[0];
         }
 
         private async Task Guardar()
         {
-            // Validación de campos obligatorios
-            if (string.IsNullOrWhiteSpace(Titular))
+            if (string.IsNullOrWhiteSpace(Metodo))
             {
                 await Application.Current.MainPage.DisplayAlert(
-                    "Campo requerido",
-                    "El nombre del titular es obligatorio",
+                    "Error",
+                    "Debes seleccionar el tipo de método de pago",
                     "OK");
                 return;
             }
 
-            if (EsTarjeta)
+            IsBusy = true;
+
+            try
             {
-                if (string.IsNullOrWhiteSpace(Ultimos4Digitos) || Ultimos4Digitos.Length != 4)
+                var metodoPago = new MetodoPago
                 {
-                    await Application.Current.MainPage.DisplayAlert(
-                        "Campo requerido",
-                        "Ingrese los últimos 4 dígitos de la tarjeta",
-                        "OK");
-                    return;
-                }
+                    Metodo = Metodo,
+                    Titular = Titular,
+                    Ultimos4 = Ultimos4,
+                    Expiracion = Expiracion
+                };
 
-                if (string.IsNullOrWhiteSpace(Vencimiento))
-                {
-                    await Application.Current.MainPage.DisplayAlert(
-                        "Campo requerido",
-                        "La fecha de vencimiento es obligatoria",
-                        "OK");
-                    return;
-                }
+                bool ok = await clienteService.GuardarMetodoPago(metodoPago);
 
-                // Validar formato MM/YY
-                if (!System.Text.RegularExpressions.Regex.IsMatch(Vencimiento, VencimientoRegexPattern))
+                if (ok)
                 {
                     await Application.Current.MainPage.DisplayAlert(
-                        "Formato inválido",
-                        "El vencimiento debe tener formato MM/YY",
+                        "Éxito",
+                        "Método de pago guardado correctamente",
                         "OK");
-                    return;
+
+                    await Shell.Current.GoToAsync("..");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Error",
+                        "No se pudo guardar el método de pago",
+                        "OK");
                 }
             }
-
-            IsLoading = true;
-
-            var metodo = new MetodoPago
-            {
-                Alias = string.IsNullOrWhiteSpace(Alias) ? TipoSeleccionado : Alias,
-                Titular = Titular,
-                NumeroEnmascarado = EsTarjeta ? $"****{Ultimos4Digitos}" : "",
-                Vencimiento = EsTarjeta ? Vencimiento : "",
-                Marca = TipoSeleccionado
-            };
-
-            bool ok = await clienteService.GuardarMetodoPago(metodo);
-
-            IsLoading = false;
-
-            if (ok)
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Método guardado",
-                    "El método de pago se guardó correctamente",
-                    "OK");
-                await Shell.Current.GoToAsync("..");
-            }
-            else
+            catch (Exception ex)
             {
                 await Application.Current.MainPage.DisplayAlert(
                     "Error",
-                    "No se pudo guardar el método de pago",
+                    $"Error: {ex.Message}",
                     "OK");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 

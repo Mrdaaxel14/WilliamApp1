@@ -1,6 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -65,21 +65,33 @@ namespace WilliamApp.ViewModels
 
         private async Task CargarPerfil()
         {
-            var perfil = await clienteService.ObtenerPerfil();
-            if (perfil?.Usuario != null)
+            try
             {
-                Nombre = perfil.Usuario.Nombre;
-                Email = perfil.Usuario.Email;
-                Telefono = perfil.Usuario.Telefono;
+                // Cargar datos del usuario
+                var usuario = await clienteService.ObtenerPerfil();
+                if (usuario != null)
+                {
+                    Nombre = usuario.Nombre;
+                    Email = usuario.Email;
+                    Telefono = usuario.Telefono;
+                }
+
+                // Cargar métodos de pago
+                var metodos = await clienteService.ObtenerMetodosPago();
+                MetodosPago.Clear();
+                foreach (var mp in metodos)
+                    MetodosPago.Add(mp);
+
+                // Cargar direcciones
+                var direcciones = await clienteService.ObtenerDirecciones();
+                Direcciones.Clear();
+                foreach (var dir in direcciones)
+                    Direcciones.Add(dir);
             }
-
-            MetodosPago.Clear();
-            foreach (var mp in perfil?.MetodosPago ?? Enumerable.Empty<MetodoPago>())
-                MetodosPago.Add(mp);
-
-            Direcciones.Clear();
-            foreach (var dir in perfil?.Direcciones ?? Enumerable.Empty<Direccion>())
-                Direcciones.Add(dir);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al cargar perfil: {ex.Message}");
+            }
         }
 
         private async Task GuardarDatos()
@@ -97,6 +109,13 @@ namespace WilliamApp.ViewModels
                 await Application.Current.MainPage.DisplayAlert(
                     "Perfil actualizado",
                     "Guardamos tus datos personales",
+                    "OK");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "No se pudieron guardar los datos",
                     "OK");
             }
         }

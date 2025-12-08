@@ -2,83 +2,60 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WilliamApp.Views.AgregarDireccionPage"
-             Title="Agregar Dirección"
+             Title="Agregar dirección"
              BackgroundColor="#F9F9F9">
-
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="20">
-            <Frame BackgroundColor="White" 
-                   Padding="20" 
-                   CornerRadius="12" 
-                   HasShadow="True">
-                <VerticalStackLayout Spacing="15">
-                    <Label Text="Nueva Dirección"
+            <Frame BackgroundColor="White" Padding="20" CornerRadius="12" HasShadow="True">
+                <VerticalStackLayout Spacing="12">
+
+                    <Label Text="Nueva dirección"
                            FontAttributes="Bold"
-                           FontSize="22"
-                           HorizontalOptions="Center"
-                           TextColor="#101010" />
+                           FontSize="20" />
 
-                    <Label Text="Provincia" 
-                           FontSize="14" />
-                    <Entry Text="{Binding Provincia}" 
-                           Placeholder="Ingrese la provincia"
-                           IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
+                    <Label Text="Provincia" FontSize="14" TextColor="#616161" />
+                    <Entry Text="{Binding Provincia}"
+                           Placeholder="Ej: Buenos Aires" />
 
-                    <Label Text="Ciudad *" 
-                           FontSize="14" />
-                    <Entry Text="{Binding Ciudad}" 
-                           Placeholder="Ingrese la ciudad"
-                           IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
+                    <Label Text="Ciudad *" FontSize="14" TextColor="#616161" />
+                    <Entry Text="{Binding Ciudad}"
+                           Placeholder="Ej: La Plata" />
 
-                    <Label Text="Calle *" 
-                           FontSize="14" />
-                    <Entry Text="{Binding Calle}" 
-                           Placeholder="Ingrese la calle"
-                           IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
+                    <Label Text="Calle *" FontSize="14" TextColor="#616161" />
+                    <Entry Text="{Binding Calle}"
+                           Placeholder="Ej:  Av. 7" />
 
-                    <Label Text="Número" 
-                           FontSize="14" />
-                    <Entry Text="{Binding Numero}" 
-                           Placeholder="Ingrese el número"
-                           IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
+                    <Label Text="Número" FontSize="14" TextColor="#616161" />
+                    <Entry Text="{Binding Numero}"
+                           Placeholder="Ej:  1234"
+                           Keyboard="Numeric" />
 
-                    <Label Text="Código Postal" 
-                           FontSize="14" />
-                    <Entry Text="{Binding CodigoPostal}" 
-                           Placeholder="Ingrese el código postal"
-                           IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
+                    <Label Text="Código Postal" FontSize="14" TextColor="#616161" />
+                    <Entry Text="{Binding CodigoPostal}"
+                           Placeholder="Ej:  1900"
+                           Keyboard="Numeric" />
 
-                    <Label Text="* Campos obligatorios" 
-                           FontSize="12" 
-                           TextColor="Gray"
-                           Margin="0,10,0,0" />
-
-                    <Button Text="Guardar"
-                            BackgroundColor="#FFD600"
-                            TextColor="Black"
-                            FontAttributes="Bold"
-                            HeightRequest="50"
-                            CornerRadius="10"
-                            Command="{Binding GuardarCommand}"
-                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
-                            Margin="0,10,0,0" />
-
-                    <Button Text="Cancelar"
-                            BackgroundColor="White"
-                            TextColor="Black"
-                            BorderColor="#E0E0E0"
-                            BorderWidth="1"
-                            HeightRequest="50"
-                            CornerRadius="10"
-                            Command="{Binding CancelarCommand}"
-                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
-
-                    <ActivityIndicator IsRunning="{Binding IsLoading}"
-                                       IsVisible="{Binding IsLoading}"
-                                       Color="#FFD600"
-                                       HorizontalOptions="Center" />
                 </VerticalStackLayout>
             </Frame>
+            <Button Text="Guardar"
+                    BackgroundColor="#FFD600"
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    CornerRadius="12"
+                    HeightRequest="50"
+                    Command="{Binding GuardarCommand}" />
+
+            <Button Text="Cancelar"
+                    BackgroundColor="#E0E0E0"
+                    TextColor="Black"
+                    CornerRadius="12"
+                    HeightRequest="50"
+                    Command="{Binding CancelarCommand}" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="#FFD600"
+                               HorizontalOptions="Center" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

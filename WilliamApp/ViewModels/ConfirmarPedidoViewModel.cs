@@ -76,7 +76,9 @@ namespace WilliamApp.ViewModels
             var metodos = await clienteService.ObtenerMetodosPago();
             MetodosPago.Clear();
             foreach (var m in metodos) MetodosPago.Add(m);
-            if (MetodoPagoSeleccionado == null || !MetodosPago.Contains(MetodoPagoSeleccionado))
+
+            // Seleccionar el último agregado si no hay selección válida
+            if (MetodoPagoSeleccionado == null || !MetodosPago.Any(mp => mp.IdMetodoPago == MetodoPagoSeleccionado.IdMetodoPago))
                 MetodoPagoSeleccionado = MetodosPago.LastOrDefault();
         }
 
@@ -85,7 +87,9 @@ namespace WilliamApp.ViewModels
             var direcciones = await clienteService.ObtenerDirecciones();
             Direcciones.Clear();
             foreach (var d in direcciones) Direcciones.Add(d);
-            if (DireccionSeleccionada == null || !Direcciones.Contains(DireccionSeleccionada))
+
+            // Seleccionar la última agregada si no hay selección válida
+            if (DireccionSeleccionada == null || !Direcciones.Any(dir => dir.IdDireccion == DireccionSeleccionada.IdDireccion))
                 DireccionSeleccionada = Direcciones.LastOrDefault();
         }
 
@@ -120,16 +124,14 @@ namespace WilliamApp.ViewModels
                 return;
             }
 
-            bool ok = await pedidoService.ConfirmarPedido(
-                MetodoPagoSeleccionado.IdMetodoPago,
-                DireccionSeleccionada.IdDireccion,
-                "Pago simulado");
+            // Tu API actual usa el endpoint simple de crear pedido
+            bool ok = await pedidoService.CrearPedido();
 
             if (ok)
             {
                 await Application.Current.MainPage.DisplayAlert(
                     "Pedido confirmado",
-                    "Tu pedido fue confirmado con el pago simulado.",
+                    "Tu pedido fue creado exitosamente.",
                     "OK");
 
                 await Shell.Current.GoToAsync("//pedidos");

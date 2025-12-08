@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace WilliamApp.ViewModels
         private string calle;
         private string numero;
         private string codigoPostal;
-        private bool isLoading;
+        private bool isBusy;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -51,10 +52,10 @@ namespace WilliamApp.ViewModels
             set { codigoPostal = value; OnPropertyChanged(); }
         }
 
-        public bool IsLoading
+        public bool IsBusy
         {
-            get => isLoading;
-            set { isLoading = value; OnPropertyChanged(); }
+            get => isBusy;
+            set { isBusy = value; OnPropertyChanged(); }
         }
 
         public ICommand GuardarCommand { get; }
@@ -69,54 +70,57 @@ namespace WilliamApp.ViewModels
 
         private async Task Guardar()
         {
-            // Validación de campos obligatorios
-            if (string.IsNullOrWhiteSpace(Calle))
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Campo requerido",
-                    "La calle es obligatoria",
-                    "OK");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(Ciudad))
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Campo requerido",
-                    "La ciudad es obligatoria",
-                    "OK");
-                return;
-            }
-
-            IsLoading = true;
-
-            var direccion = new Direccion
-            {
-                Calle = Calle,
-                Numero = Numero,
-                Ciudad = Ciudad,
-                Provincia = Provincia,
-                CodigoPostal = CodigoPostal
-            };
-
-            bool ok = await clienteService.GuardarDireccion(direccion);
-
-            IsLoading = false;
-
-            if (ok)
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Dirección guardada",
-                    "La dirección se guardó correctamente",
-                    "OK");
-                await Shell.Current.GoToAsync("..");
-            }
-            else
+            if (string.IsNullOrWhiteSpace(Calle) || string.IsNullOrWhiteSpace(Ciudad))
             {
                 await Application.Current.MainPage.DisplayAlert(
                     "Error",
-                    "No se pudo guardar la dirección",
+                    "Debes ingresar al menos la calle y la ciudad",
                     "OK");
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                var direccion = new Direccion
+                {
+                    Provincia = Provincia,
+                    Ciudad = Ciudad,
+                    Calle = Calle,
+                    Numero = Numero,
+                    CodigoPostal = CodigoPostal
+                };
+
+                bool ok = await clienteService.GuardarDireccion(direccion);
+
+                if (ok)
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Éxito",
+                        "Dirección guardada correctamente",
+                        "OK");
+
+                    await Shell.Current.GoToAsync("..");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Error",
+                        "No se pudo guardar la dirección",
+                        "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    $"Error: {ex.Message}",
+                    "OK");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 

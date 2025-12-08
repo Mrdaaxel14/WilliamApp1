@@ -4,7 +4,7 @@
              x:Class="WilliamApp.Views.CuentaUsuarioPage"
              Title="Mi perfil"
              BackgroundColor="#F9F9F9">
-
+    
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="15">
             <Frame BackgroundColor="#FFD600" Padding="20" CornerRadius="12">
@@ -12,16 +12,12 @@
                     <Label Text="Mis datos"
                            FontAttributes="Bold"
                            FontSize="20" />
-
                     <Label Text="Nombre" />
                     <Entry Text="{Binding Nombre}" />
-
                     <Label Text="Email" />
                     <Entry Text="{Binding Email}" />
-
                     <Label Text="Teléfono" />
                     <Entry Text="{Binding Telefono}" />
-
                     <Button Text="Guardar cambios"
                             BackgroundColor="White"
                             TextColor="Black"
@@ -35,16 +31,15 @@
                     <CollectionView ItemsSource="{Binding MetodosPago}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Frame Padding="10" BorderColor="#FFD600" CornerRadius="10">
+                                <Frame Padding="10" BorderColor="#FFD600" CornerRadius="10" Margin="0,0,0,8">
                                     <VerticalStackLayout>
-                                        <Label Text="{Binding Alias}" FontAttributes="Bold" />
-                                        <Label Text="{Binding Resumen}" />
+                                        <Label Text="{Binding Metodo}" FontAttributes="Bold" />
+                                        <Label Text="{Binding Resumen}" FontSize="12" TextColor="#616161" />
                                     </VerticalStackLayout>
                                 </Frame>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-
                     <Button Text="Agregar método"
                             Command="{Binding AgregarMetodoPagoCommand}" />
                 </VerticalStackLayout>
@@ -56,16 +51,15 @@
                     <CollectionView ItemsSource="{Binding Direcciones}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Frame Padding="10" BorderColor="#FFD600" CornerRadius="10">
+                                <Frame Padding="10" BorderColor="#FFD600" CornerRadius="10" Margin="0,0,0,8">
                                     <VerticalStackLayout>
                                         <Label Text="{Binding Etiqueta}" FontAttributes="Bold" />
-                                        <Label Text="{Binding Referencia}" FontSize="12" />
+                                        <Label Text="{Binding CodigoPostal, StringFormat='CP: {0}'}" FontSize="12" TextColor="#616161" />
                                     </VerticalStackLayout>
                                 </Frame>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-
                     <Button Text="Agregar dirección"
                             Command="{Binding AgregarDireccionCommand}" />
                 </VerticalStackLayout>
