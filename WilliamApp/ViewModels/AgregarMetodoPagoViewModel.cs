@@ -11,6 +11,7 @@ namespace WilliamApp.ViewModels
     public class AgregarMetodoPagoViewModel : INotifyPropertyChanged
     {
         private readonly ClienteService clienteService;
+        private const string VencimientoRegexPattern = @"^\d{2}/\d{2}$";
 
         private string tipoSeleccionado;
         private string alias;
@@ -116,7 +117,7 @@ namespace WilliamApp.ViewModels
                 }
 
                 // Validar formato MM/YY
-                if (!System.Text.RegularExpressions.Regex.IsMatch(Vencimiento, @"^\d{2}/\d{2}$"))
+                if (!System.Text.RegularExpressions.Regex.IsMatch(Vencimiento, VencimientoRegexPattern))
                 {
                     await Application.Current.MainPage.DisplayAlert(
                         "Formato inválido",

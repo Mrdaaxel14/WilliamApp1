@@ -67,12 +67,21 @@ namespace WilliamApp.ViewModels
 
         public async Task RecargarDatos()
         {
+            await RecargarMetodosPago();
+            await RecargarDirecciones();
+        }
+
+        private async Task RecargarMetodosPago()
+        {
             var metodos = await clienteService.ObtenerMetodosPago();
             MetodosPago.Clear();
             foreach (var m in metodos) MetodosPago.Add(m);
             if (MetodoPagoSeleccionado == null || !MetodosPago.Contains(MetodoPagoSeleccionado))
                 MetodoPagoSeleccionado = MetodosPago.LastOrDefault();
+        }
 
+        private async Task RecargarDirecciones()
+        {
             var direcciones = await clienteService.ObtenerDirecciones();
             Direcciones.Clear();
             foreach (var d in direcciones) Direcciones.Add(d);
