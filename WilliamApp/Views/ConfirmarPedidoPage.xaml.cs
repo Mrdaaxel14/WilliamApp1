@@ -5,10 +5,19 @@ namespace WilliamApp.Views
 {
     public partial class ConfirmarPedidoPage : ContentPage
     {
+        private ConfirmarPedidoViewModel viewModel;
+
         public ConfirmarPedidoPage()
         {
             InitializeComponent();
-            BindingContext = new ConfirmarPedidoViewModel();
+            viewModel = new ConfirmarPedidoViewModel();
+            BindingContext = viewModel;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await viewModel.RecargarDatos();
         }
     }
 }

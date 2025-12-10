@@ -58,6 +58,11 @@ namespace WilliamApp.ViewModels
             _ = CargarPerfil();
         }
 
+        public async Task RecargarDatos()
+        {
+            await CargarPerfil();
+        }
+
         private async Task CargarPerfil()
         {
             var perfil = await clienteService.ObtenerPerfil();
@@ -98,64 +103,12 @@ namespace WilliamApp.ViewModels
 
         private async Task AgregarMetodoPago()
         {
-            string alias = await Application.Current.MainPage.DisplayPromptAsync(
-                "Nuevo método", "Alias de la tarjeta o cuenta");
-            string titular = await Application.Current.MainPage.DisplayPromptAsync(
-                "Titular", "Nombre del titular");
-            string numero = await Application.Current.MainPage.DisplayPromptAsync(
-                "Número", "Número de tarjeta o cuenta");
-            string vencimiento = await Application.Current.MainPage.DisplayPromptAsync(
-                "Vencimiento", "MM/AA");
-
-            if (string.IsNullOrWhiteSpace(alias) || string.IsNullOrWhiteSpace(numero))
-                return;
-
-            var metodo = new MetodoPago
-            {
-                Alias = alias,
-                Titular = titular,
-                NumeroEnmascarado = numero,
-                Vencimiento = vencimiento,
-                Marca = "Personalizado"
-            };
-
-            bool ok = await clienteService.GuardarMetodoPago(metodo);
-            if (ok)
-            {
-                MetodosPago.Add(metodo);
-            }
+            await Shell.Current.GoToAsync(nameof(Views.AgregarMetodoPagoPage));
         }
 
         private async Task AgregarDireccion()
         {
-            string calle = await Application.Current.MainPage.DisplayPromptAsync(
-                "Dirección", "Calle");
-            string numero = await Application.Current.MainPage.DisplayPromptAsync(
-                "Dirección", "Número");
-            string ciudad = await Application.Current.MainPage.DisplayPromptAsync(
-                "Dirección", "Ciudad");
-            string provincia = await Application.Current.MainPage.DisplayPromptAsync(
-                "Dirección", "Provincia");
-            string cp = await Application.Current.MainPage.DisplayPromptAsync(
-                "Dirección", "Código Postal");
-
-            if (string.IsNullOrWhiteSpace(calle) || string.IsNullOrWhiteSpace(ciudad))
-                return;
-
-            var direccion = new Direccion
-            {
-                Calle = calle,
-                Numero = numero,
-                Ciudad = ciudad,
-                Provincia = provincia,
-                CodigoPostal = cp
-            };
-
-            bool ok = await clienteService.GuardarDireccion(direccion);
-            if (ok)
-            {
-                Direcciones.Add(direccion);
-            }
+            await Shell.Current.GoToAsync(nameof(Views.AgregarDireccionPage));
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
