@@ -13,14 +13,28 @@ namespace WilliamApp.ViewModels
     {
         private readonly ClienteService clienteService;
 
+        private int idDireccion;
         private string provincia;
         private string ciudad;
         private string calle;
         private string numero;
         private string codigoPostal;
         private bool isBusy;
+        private string titulo;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public int IdDireccion
+        {
+            get => idDireccion;
+            set { idDireccion = value; OnPropertyChanged(); }
+        }
+
+        public string Titulo
+        {
+            get => titulo;
+            set { titulo = value; OnPropertyChanged(); }
+        }
 
         public string Provincia
         {
@@ -66,6 +80,21 @@ namespace WilliamApp.ViewModels
             clienteService = new ClienteService();
             GuardarCommand = new Command(async () => await Guardar());
             CancelarCommand = new Command(async () => await Cancelar());
+            Titulo = "Agregar dirección";
+        }
+
+        public void CargarDireccion(Direccion direccion)
+        {
+            if (direccion != null)
+            {
+                IdDireccion = direccion.IdDireccion;
+                Provincia = direccion.Provincia;
+                Ciudad = direccion.Ciudad;
+                Calle = direccion.Calle;
+                Numero = direccion.Numero;
+                CodigoPostal = direccion.CodigoPostal;
+                Titulo = "Editar dirección";
+            }
         }
 
         private async Task Guardar()
@@ -85,6 +114,7 @@ namespace WilliamApp.ViewModels
             {
                 var direccion = new Direccion
                 {
+                    IdDireccion = IdDireccion,
                     Provincia = Provincia,
                     Ciudad = Ciudad,
                     Calle = Calle,
@@ -96,9 +126,13 @@ namespace WilliamApp.ViewModels
 
                 if (ok)
                 {
+                    string mensaje = IdDireccion > 0 
+                        ? "Dirección actualizada correctamente"
+                        : "Dirección guardada correctamente";
+                    
                     await Application.Current.MainPage.DisplayAlert(
                         "Éxito",
-                        "Dirección guardada correctamente",
+                        mensaje,
                         "OK");
 
                     await Shell.Current.GoToAsync("..");
