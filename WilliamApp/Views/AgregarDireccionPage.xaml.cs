@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using Microsoft.Maui.Controls;
 using WilliamApp.Models;
@@ -16,8 +17,15 @@ namespace WilliamApp.Views
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    var direccion = JsonSerializer.Deserialize<Direccion>(Uri.UnescapeDataString(value));
-                    viewModel?.CargarDireccion(direccion);
+                    try
+                    {
+                        var direccion = JsonSerializer.Deserialize<Direccion>(Uri.UnescapeDataString(value));
+                        viewModel?.CargarDireccion(direccion);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error al deserializar dirección: {ex.Message}");
+                    }
                 }
             }
         }

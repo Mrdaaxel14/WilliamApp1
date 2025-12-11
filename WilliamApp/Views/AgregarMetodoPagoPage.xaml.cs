@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using Microsoft.Maui.Controls;
 using WilliamApp.Models;
@@ -16,8 +17,15 @@ namespace WilliamApp.Views
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    var metodoPago = JsonSerializer.Deserialize<MetodoPago>(Uri.UnescapeDataString(value));
-                    viewModel?.CargarMetodoPago(metodoPago);
+                    try
+                    {
+                        var metodoPago = JsonSerializer.Deserialize<MetodoPago>(Uri.UnescapeDataString(value));
+                        viewModel?.CargarMetodoPago(metodoPago);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error al deserializar método de pago: {ex.Message}");
+                    }
                 }
             }
         }

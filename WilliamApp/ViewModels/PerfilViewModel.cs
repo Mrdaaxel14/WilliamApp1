@@ -143,8 +143,18 @@ namespace WilliamApp.ViewModels
         {
             if (metodo == null) return;
             
-            var metodoPagoJson = JsonSerializer.Serialize(metodo);
-            await Shell.Current.GoToAsync($"{nameof(Views.AgregarMetodoPagoPage)}?metodoPagoJson={Uri.EscapeDataString(metodoPagoJson)}");
+            try
+            {
+                var metodoPagoJson = JsonSerializer.Serialize(metodo);
+                await Shell.Current.GoToAsync($"{nameof(Views.AgregarMetodoPagoPage)}?metodoPagoJson={Uri.EscapeDataString(metodoPagoJson)}");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    $"No se pudo abrir la página de edición: {ex.Message}",
+                    "OK");
+            }
         }
 
         private async Task EliminarMetodoPago(MetodoPago metodo)
@@ -181,8 +191,18 @@ namespace WilliamApp.ViewModels
         {
             if (direccion == null) return;
             
-            var direccionJson = JsonSerializer.Serialize(direccion);
-            await Shell.Current.GoToAsync($"{nameof(Views.AgregarDireccionPage)}?direccionJson={Uri.EscapeDataString(direccionJson)}");
+            try
+            {
+                var direccionJson = JsonSerializer.Serialize(direccion);
+                await Shell.Current.GoToAsync($"{nameof(Views.AgregarDireccionPage)}?direccionJson={Uri.EscapeDataString(direccionJson)}");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    $"No se pudo abrir la página de edición: {ex.Message}",
+                    "OK");
+            }
         }
 
         private async Task EliminarDireccion(Direccion direccion)
