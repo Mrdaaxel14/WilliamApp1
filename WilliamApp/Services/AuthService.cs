@@ -33,6 +33,17 @@ namespace WilliamApp.Services
             Settings.Token = obj.Token;
             return true;
         }
+
+        public async Task<bool> Register(string nombre, string email, string password, string telefono)
+        {
+            var data = new { nombre, email, password, telefono };
+            var json = JsonSerializer.Serialize(data);
+
+            var response = await client.PostAsync("auth/register",
+                new StringContent(json, Encoding.UTF8, "application/json"));
+
+            return response.IsSuccessStatusCode;
+        }
     }
 
     public class LoginResponse
