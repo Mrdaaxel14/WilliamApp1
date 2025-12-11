@@ -34,11 +34,13 @@ namespace WilliamApp.ViewModels
         }
 
         public ICommand LoginCommand { get; }
+        public ICommand IrARegistroCommand { get; }
 
         public LoginViewModel()
         {
             authService = new AuthService();
             LoginCommand = new Command(async () => await Login());
+            IrARegistroCommand = new Command(async () => await IrARegistro());
         }
 
         private async Task Login()
@@ -58,6 +60,11 @@ namespace WilliamApp.ViewModels
                     "OK"
                 );
             }
+        }
+
+        private async Task IrARegistro()
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(new Views.RegisterPage());
         }
 
         void OnPropertyChanged([CallerMemberName] string name = null)
