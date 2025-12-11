@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
@@ -90,7 +91,7 @@ namespace WilliamApp.ViewModels
             }
 
             // Validar formato del email
-            if (!Email.Contains("@") || !Email.Contains("."))
+            if (!IsValidEmail(Email))
             {
                 await Application.Current.MainPage.DisplayAlert(
                     "Error",
@@ -154,21 +155,15 @@ namespace WilliamApp.ViewModels
             }
             catch (Exception ex)
             {
-                // Check if the error message indicates duplicate email
-                if (ex.Message.Contains("email") || ex.Message.Contains("Email"))
-                {
-                    await Application.Current.MainPage.DisplayAlert(
-                        "Error",
-                        "El email ya está registrado",
-                        "OK");
-                }
-                else
-                {
-                    await Application.Current.MainPage.DisplayAlert(
-                        "Error",
-                        "Error al crear la cuenta. Intenta nuevamente",
-                        "OK");
-                }
+                // Display the specific error message from the service
+                var errorMessage = ex.Message == "El email ya está registrado" 
+                    ? ex.Message 
+                    : "Error al crear la cuenta. Intenta nuevamente";
+                    
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    errorMessage,
+                    "OK");
             }
             finally
             {
@@ -179,6 +174,23 @@ namespace WilliamApp.ViewModels
         private async Task IrALogin()
         {
             await Application.Current.MainPage.Navigation.PopAsync();
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            try
+            {
+                // Use a simple but more robust email validation pattern
+                var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+                return Regex.IsMatch(email, emailPattern, RegexOptions.IgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

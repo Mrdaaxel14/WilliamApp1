@@ -42,7 +42,19 @@ namespace WilliamApp.Services
             var response = await client.PostAsync("auth/register",
                 new StringContent(json, Encoding.UTF8, "application/json"));
 
-            return response.IsSuccessStatusCode;
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                // If the API returns 409 Conflict or the error contains email-related message, throw specific exception
+                if (response.StatusCode == System.Net.HttpStatusCode.Conflict || 
+                    errorContent.Contains("email", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new Exception("El email ya está registrado");
+                }
+                return false;
+            }
+
+            return true;
         }
     }
 
