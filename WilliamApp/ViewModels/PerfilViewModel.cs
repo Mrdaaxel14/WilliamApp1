@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
@@ -42,6 +43,10 @@ namespace WilliamApp.ViewModels
         public ICommand GuardarDatosCommand { get; }
         public ICommand AgregarMetodoPagoCommand { get; }
         public ICommand AgregarDireccionCommand { get; }
+        public ICommand EditarMetodoPagoCommand { get; }
+        public ICommand EliminarMetodoPagoCommand { get; }
+        public ICommand EditarDireccionCommand { get; }
+        public ICommand EliminarDireccionCommand { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -54,6 +59,10 @@ namespace WilliamApp.ViewModels
             GuardarDatosCommand = new Command(async () => await GuardarDatos());
             AgregarMetodoPagoCommand = new Command(async () => await AgregarMetodoPago());
             AgregarDireccionCommand = new Command(async () => await AgregarDireccion());
+            EditarMetodoPagoCommand = new Command<MetodoPago>(async (metodo) => await EditarMetodoPago(metodo));
+            EliminarMetodoPagoCommand = new Command<MetodoPago>(async (metodo) => await EliminarMetodoPago(metodo));
+            EditarDireccionCommand = new Command<Direccion>(async (direccion) => await EditarDireccion(direccion));
+            EliminarDireccionCommand = new Command<Direccion>(async (direccion) => await EliminarDireccion(direccion));
 
             _ = CargarPerfil();
         }
@@ -128,6 +137,82 @@ namespace WilliamApp.ViewModels
         private async Task AgregarDireccion()
         {
             await Shell.Current.GoToAsync(nameof(Views.AgregarDireccionPage));
+        }
+
+        private async Task EditarMetodoPago(MetodoPago metodo)
+        {
+            if (metodo == null) return;
+            
+            var metodoPagoJson = JsonSerializer.Serialize(metodo);
+            await Shell.Current.GoToAsync($"{nameof(Views.AgregarMetodoPagoPage)}?metodoPagoJson={Uri.EscapeDataString(metodoPagoJson)}");
+        }
+
+        private async Task EliminarMetodoPago(MetodoPago metodo)
+        {
+            if (metodo == null) return;
+
+            bool confirm = await Application.Current.MainPage.DisplayAlert(
+                "Confirmar eliminación",
+                $"¿Estás seguro de que quieres eliminar el método de pago {metodo.Metodo}?",
+                "Sí",
+                "No");
+
+            if (!confirm) return;
+
+            bool ok = await clienteService.EliminarMetodoPago(metodo.IdMetodoPago);
+            if (ok)
+            {
+                MetodosPago.Remove(metodo);
+                await Application.Current.MainPage.DisplayAlert(
+                    "Éxito",
+                    "Método de pago eliminado correctamente",
+                    "OK");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "No se pudo eliminar el método de pago",
+                    "OK");
+            }
+        }
+
+        private async Task EditarDireccion(Direccion direccion)
+        {
+            if (direccion == null) return;
+            
+            var direccionJson = JsonSerializer.Serialize(direccion);
+            await Shell.Current.GoToAsync($"{nameof(Views.AgregarDireccionPage)}?direccionJson={Uri.EscapeDataString(direccionJson)}");
+        }
+
+        private async Task EliminarDireccion(Direccion direccion)
+        {
+            if (direccion == null) return;
+
+            bool confirm = await Application.Current.MainPage.DisplayAlert(
+                "Confirmar eliminación",
+                $"¿Estás seguro de que quieres eliminar la dirección {direccion.Etiqueta}?",
+                "Sí",
+                "No");
+
+            if (!confirm) return;
+
+            bool ok = await clienteService.EliminarDireccion(direccion.IdDireccion);
+            if (ok)
+            {
+                Direcciones.Remove(direccion);
+                await Application.Current.MainPage.DisplayAlert(
+                    "Éxito",
+                    "Dirección eliminada correctamente",
+                    "OK");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "No se pudo eliminar la dirección",
+                    "OK");
+            }
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

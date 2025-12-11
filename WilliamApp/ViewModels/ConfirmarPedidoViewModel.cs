@@ -124,8 +124,11 @@ namespace WilliamApp.ViewModels
                 return;
             }
 
-            // Tu API actual usa el endpoint simple de crear pedido
-            bool ok = await pedidoService.CrearPedido();
+            // Pasar los IDs seleccionados al crear el pedido
+            bool ok = await pedidoService.CrearPedido(
+                idDireccion: DireccionSeleccionada.IdDireccion,
+                idMetodoPagoUsuario: MetodoPagoSeleccionado.IdMetodoPago
+            );
 
             if (ok)
             {

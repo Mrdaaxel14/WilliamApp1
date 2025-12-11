@@ -13,13 +13,27 @@ namespace WilliamApp.ViewModels
     {
         private readonly ClienteService clienteService;
 
+        private int idMetodoPago;
         private string metodo;
         private string titular;
         private string ultimos4;
         private string expiracion;
         private bool isBusy;
+        private string titulo;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public int IdMetodoPago
+        {
+            get => idMetodoPago;
+            set { idMetodoPago = value; OnPropertyChanged(); }
+        }
+
+        public string Titulo
+        {
+            get => titulo;
+            set { titulo = value; OnPropertyChanged(); }
+        }
 
         public string Metodo
         {
@@ -59,6 +73,20 @@ namespace WilliamApp.ViewModels
             clienteService = new ClienteService();
             GuardarCommand = new Command(async () => await Guardar());
             CancelarCommand = new Command(async () => await Cancelar());
+            Titulo = "Agregar método de pago";
+        }
+
+        public void CargarMetodoPago(MetodoPago metodoPago)
+        {
+            if (metodoPago != null)
+            {
+                IdMetodoPago = metodoPago.IdMetodoPago;
+                Metodo = metodoPago.Metodo;
+                Titular = metodoPago.Titular;
+                Ultimos4 = metodoPago.Ultimos4;
+                Expiracion = metodoPago.Expiracion;
+                Titulo = "Editar método de pago";
+            }
         }
 
         private async Task Guardar()
@@ -78,6 +106,7 @@ namespace WilliamApp.ViewModels
             {
                 var metodoPago = new MetodoPago
                 {
+                    IdMetodoPago = IdMetodoPago,
                     Metodo = Metodo,
                     Titular = Titular,
                     Ultimos4 = Ultimos4,
@@ -88,9 +117,13 @@ namespace WilliamApp.ViewModels
 
                 if (ok)
                 {
+                    string mensaje = IdMetodoPago > 0 
+                        ? "Método de pago actualizado correctamente"
+                        : "Método de pago guardado correctamente";
+                    
                     await Application.Current.MainPage.DisplayAlert(
                         "Éxito",
-                        "Método de pago guardado correctamente",
+                        mensaje,
                         "OK");
 
                     await Shell.Current.GoToAsync("..");

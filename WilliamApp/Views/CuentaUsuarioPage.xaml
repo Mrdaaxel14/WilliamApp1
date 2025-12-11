@@ -31,12 +31,26 @@
                     <CollectionView ItemsSource="{Binding MetodosPago}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Frame Padding="10" BorderColor="#FFD600" CornerRadius="10" Margin="0,0,0,8">
-                                    <VerticalStackLayout>
-                                        <Label Text="{Binding Metodo}" FontAttributes="Bold" />
-                                        <Label Text="{Binding Resumen}" FontSize="12" TextColor="#616161" />
-                                    </VerticalStackLayout>
-                                </Frame>
+                                <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="Editar"
+                                                      BackgroundColor="#4CAF50"
+                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type BindingContext}}, Path=BindingContext.EditarMetodoPagoCommand}"
+                                                      CommandParameter="{Binding}" />
+                                            <SwipeItem Text="Eliminar"
+                                                      BackgroundColor="#F44336"
+                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type BindingContext}}, Path=BindingContext.EliminarMetodoPagoCommand}"
+                                                      CommandParameter="{Binding}" />
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    <Frame Padding="10" BorderColor="#FFD600" CornerRadius="10" Margin="0,0,0,8">
+                                        <VerticalStackLayout>
+                                            <Label Text="{Binding Metodo}" FontAttributes="Bold" />
+                                            <Label Text="{Binding Resumen}" FontSize="12" TextColor="#616161" />
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </SwipeView>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
@@ -51,12 +65,26 @@
                     <CollectionView ItemsSource="{Binding Direcciones}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Frame Padding="10" BorderColor="#FFD600" CornerRadius="10" Margin="0,0,0,8">
-                                    <VerticalStackLayout>
-                                        <Label Text="{Binding Etiqueta}" FontAttributes="Bold" />
-                                        <Label Text="{Binding CodigoPostal, StringFormat='CP: {0}'}" FontSize="12" TextColor="#616161" />
-                                    </VerticalStackLayout>
-                                </Frame>
+                                <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="Editar"
+                                                      BackgroundColor="#4CAF50"
+                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type BindingContext}}, Path=BindingContext.EditarDireccionCommand}"
+                                                      CommandParameter="{Binding}" />
+                                            <SwipeItem Text="Eliminar"
+                                                      BackgroundColor="#F44336"
+                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type BindingContext}}, Path=BindingContext.EliminarDireccionCommand}"
+                                                      CommandParameter="{Binding}" />
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    <Frame Padding="10" BorderColor="#FFD600" CornerRadius="10" Margin="0,0,0,8">
+                                        <VerticalStackLayout>
+                                            <Label Text="{Binding Etiqueta}" FontAttributes="Bold" />
+                                            <Label Text="{Binding CodigoPostal, StringFormat='CP: {0}'}" FontSize="12" TextColor="#616161" />
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </SwipeView>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

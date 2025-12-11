@@ -8,9 +8,14 @@ namespace WilliamApp.Services
 {
     public class PedidoService : ApiService
     {
-        public async Task<bool> CrearPedido()
+        public async Task<bool> CrearPedido(int? idDireccion = null, int? idMetodoPagoUsuario = null)
         {
-            return await PostAsync("pedido/crear", new { });
+            var payload = new
+            {
+                idDireccion = idDireccion,
+                idMetodoPagoUsuario = idMetodoPagoUsuario
+            };
+            return await PostAsync("pedido/crear", payload);
         }
 
         public async Task<bool> ConfirmarPedido(int idMetodoPago, int idDireccion, string notas)
