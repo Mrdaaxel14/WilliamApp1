@@ -13,6 +13,9 @@ namespace WilliamApp.Services
 {
     public class AuthService : ApiService
     {
+        private const string CLIENTE_ROL = "Cliente";
+        private const string MENSAJE_ERROR_LOGIN = "Usuario no encontrado. ¿No tienes cuenta? Regístrate para comenzar.";
+
         public async Task<LoginResult> Login(string email, string password)
         {
             var data = new { email, password };
@@ -25,7 +28,7 @@ namespace WilliamApp.Services
                 return new LoginResult 
                 { 
                     Success = false, 
-                    Message = "Usuario no encontrado. ¿No tienes cuenta? Regístrate para comenzar."
+                    Message = MENSAJE_ERROR_LOGIN
                 };
 
             var content = await response.Content.ReadAsStringAsync();
@@ -35,17 +38,17 @@ namespace WilliamApp.Services
                 return new LoginResult 
                 { 
                     Success = false, 
-                    Message = "Usuario no encontrado. ¿No tienes cuenta? Regístrate para comenzar."
+                    Message = MENSAJE_ERROR_LOGIN
                 };
 
             // Validar que el usuario sea Cliente
-            if (obj.User?.Rol != "Cliente")
+            if (obj.User?.Rol != CLIENTE_ROL)
             {
                 // No guardar el token y mostrar mensaje neutral
                 return new LoginResult 
                 { 
                     Success = false, 
-                    Message = "Usuario no encontrado. ¿No tienes cuenta? Regístrate para comenzar."
+                    Message = MENSAJE_ERROR_LOGIN
                 };
             }
 
