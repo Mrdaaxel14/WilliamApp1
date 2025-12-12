@@ -143,7 +143,7 @@ namespace WilliamApp.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert(
                     "Error",
-                    "No se pudo confirmar el pedido",
+                    "Producto sin Stock",
                     "OK");
             }
         }
