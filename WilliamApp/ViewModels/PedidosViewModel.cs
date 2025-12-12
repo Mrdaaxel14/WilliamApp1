@@ -67,7 +67,10 @@ namespace WilliamApp.ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al cargar pedidos: {ex.Message}");
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "No se pudieron cargar los pedidos. Por favor, intenta nuevamente.",
+                    "OK");
             }
             finally
             {
@@ -87,7 +90,10 @@ namespace WilliamApp.ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al refrescar pedidos: {ex.Message}");
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "No se pudieron actualizar los pedidos. Por favor, intenta nuevamente.",
+                    "OK");
             }
             finally
             {
@@ -100,11 +106,16 @@ namespace WilliamApp.ViewModels
             if (pedido == null)
                 return;
 
-            // Aquí se puede navegar a una página de detalle del pedido
-            // Por ahora, solo mostramos un mensaje
+            // Display order details in a formatted alert
+            var detalles = $"Pedido #{pedido.IdPedido}\n" +
+                          $"Fecha: {pedido.FechaFormateada}\n" +
+                          $"Estado: {pedido.EstadoPedido}\n" +
+                          $"{pedido.CantidadItemsTexto}\n" +
+                          $"Total: ${pedido.Total:F2}";
+            
             await Application.Current.MainPage.DisplayAlert(
                 "Detalle del pedido",
-                $"Pedido #{pedido.IdPedido}\nFecha: {pedido.FechaFormateada}\nTotal: ${pedido.Total:F2}\nEstado: {pedido.EstadoPedido}",
+                detalles,
                 "OK");
         }
 

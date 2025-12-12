@@ -68,7 +68,7 @@ namespace WilliamApp.Models
             {
                 return EstadoPedido?.ToLower() switch
                 {
-                    "entregado" => $"Llegó el {Fecha.AddDays(4).ToString("d 'de' MMMM", new System.Globalization.CultureInfo("es-ES"))}",
+                    "entregado" => "Pedido entregado",
                     "enviado" => "En camino",
                     "pendiente" => "Procesando pedido",
                     "cancelado" => "Pedido cancelado",
