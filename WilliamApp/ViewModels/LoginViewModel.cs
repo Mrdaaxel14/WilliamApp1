@@ -45,9 +45,9 @@ namespace WilliamApp.ViewModels
 
         private async Task Login()
         {
-            bool ok = await authService.Login(Email, Password);
+            var result = await authService.Login(Email, Password);
 
-            if (ok)
+            if (result.Success)
             {
                 // Cambiar la MainPage para que la navegación use el Shell principal
                 Application.Current.MainPage = new AppShell();
@@ -56,7 +56,7 @@ namespace WilliamApp.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert(
                     "Error",
-                    "Credenciales inválidas",
+                    result.Message,
                     "OK"
                 );
             }
