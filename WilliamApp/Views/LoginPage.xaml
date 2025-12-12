@@ -13,7 +13,7 @@
 
         <!-- Contenido principal -->
         <VerticalStackLayout Grid.Row="1" Spacing="10" Padding="0,10">
-            <Image Source="william_logo.png" HorizontalOptions="Center" HeightRequest="150" WidthRequest="150"/>
+            <Image Source="william_logo2.png" HorizontalOptions="Center" HeightRequest="150" WidthRequest="150"/>
             <Label Text="Bienvenido" TextColor="#101010" FontSize="Title" HorizontalOptions="Center" FontAttributes="Bold"/>
 
             <StackLayout Orientation="Vertical" Spacing="5" HorizontalOptions="Fill" Padding="30, 20, 30, 10">
