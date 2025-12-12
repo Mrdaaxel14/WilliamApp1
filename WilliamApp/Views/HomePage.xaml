@@ -19,7 +19,7 @@
                 Text=""
                 />
             <!-- Icono de usuario -->
-            <ImageButton Source="user_profile.png"
+            <ImageButton Source="profile_white.png"
                          Grid.Column="2"
                          WidthRequest="32"
                          HeightRequest="32"
