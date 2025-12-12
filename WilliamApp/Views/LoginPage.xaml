@@ -32,14 +32,14 @@
         </VerticalStackLayout>
 
         <!-- Overlay de carga (top layer) -->
-        <Grid IsVisible="{Binding IsBusy}" BackgroundColor="#80000000" InputTransparent="False">
+        <Grid IsVisible="{Binding IsBusy}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="12">
-                <ActivityIndicator IsRunning="{Binding IsBusy}" Color="White" HeightRequest="48" WidthRequest="48"/>
-                <Label Text="Iniciando sesión..." TextColor="White" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <ActivityIndicator IsRunning="{Binding IsBusy}" Color="#FFD600" HeightRequest="48" WidthRequest="48"/>
+                <Label Text="Iniciando sesión..." TextColor="Black" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
             </VerticalStackLayout>
         </Grid>
     </Grid>
