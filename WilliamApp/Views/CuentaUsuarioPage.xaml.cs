@@ -5,10 +5,19 @@ namespace WilliamApp.Views
 {
     public partial class CuentaUsuarioPage : ContentPage
     {
+        private PerfilViewModel viewModel;
+
         public CuentaUsuarioPage()
         {
             InitializeComponent();
-            BindingContext = new PerfilViewModel();
+            viewModel = new PerfilViewModel();
+            BindingContext = viewModel;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await viewModel.RecargarDatos();
         }
     }
 }

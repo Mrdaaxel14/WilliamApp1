@@ -1,7 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
@@ -42,6 +43,10 @@ namespace WilliamApp.ViewModels
         public ICommand GuardarDatosCommand { get; }
         public ICommand AgregarMetodoPagoCommand { get; }
         public ICommand AgregarDireccionCommand { get; }
+        public ICommand EditarMetodoPagoCommand { get; }
+        public ICommand EliminarMetodoPagoCommand { get; }
+        public ICommand EditarDireccionCommand { get; }
+        public ICommand EliminarDireccionCommand { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -54,27 +59,48 @@ namespace WilliamApp.ViewModels
             GuardarDatosCommand = new Command(async () => await GuardarDatos());
             AgregarMetodoPagoCommand = new Command(async () => await AgregarMetodoPago());
             AgregarDireccionCommand = new Command(async () => await AgregarDireccion());
+            EditarMetodoPagoCommand = new Command<MetodoPago>(async (metodo) => await EditarMetodoPago(metodo));
+            EliminarMetodoPagoCommand = new Command<MetodoPago>(async (metodo) => await EliminarMetodoPago(metodo));
+            EditarDireccionCommand = new Command<Direccion>(async (direccion) => await EditarDireccion(direccion));
+            EliminarDireccionCommand = new Command<Direccion>(async (direccion) => await EliminarDireccion(direccion));
 
             _ = CargarPerfil();
         }
 
+        public async Task RecargarDatos()
+        {
+            await CargarPerfil();
+        }
+
         private async Task CargarPerfil()
         {
-            var perfil = await clienteService.ObtenerPerfil();
-            if (perfil?.Usuario != null)
+            try
             {
-                Nombre = perfil.Usuario.Nombre;
-                Email = perfil.Usuario.Email;
-                Telefono = perfil.Usuario.Telefono;
+                // Cargar datos del usuario
+                var usuario = await clienteService.ObtenerPerfil();
+                if (usuario != null)
+                {
+                    Nombre = usuario.Nombre;
+                    Email = usuario.Email;
+                    Telefono = usuario.Telefono;
+                }
+
+                // Cargar métodos de pago
+                var metodos = await clienteService.ObtenerMetodosPago();
+                MetodosPago.Clear();
+                foreach (var mp in metodos)
+                    MetodosPago.Add(mp);
+
+                // Cargar direcciones
+                var direcciones = await clienteService.ObtenerDirecciones();
+                Direcciones.Clear();
+                foreach (var dir in direcciones)
+                    Direcciones.Add(dir);
             }
-
-            MetodosPago.Clear();
-            foreach (var mp in perfil?.MetodosPago ?? Enumerable.Empty<MetodoPago>())
-                MetodosPago.Add(mp);
-
-            Direcciones.Clear();
-            foreach (var dir in perfil?.Direcciones ?? Enumerable.Empty<Direccion>())
-                Direcciones.Add(dir);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al cargar perfil: {ex.Message}");
+            }
         }
 
         private async Task GuardarDatos()
@@ -94,67 +120,118 @@ namespace WilliamApp.ViewModels
                     "Guardamos tus datos personales",
                     "OK");
             }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "No se pudieron guardar los datos",
+                    "OK");
+            }
         }
 
         private async Task AgregarMetodoPago()
         {
-            string alias = await Application.Current.MainPage.DisplayPromptAsync(
-                "Nuevo método", "Alias de la tarjeta o cuenta");
-            string titular = await Application.Current.MainPage.DisplayPromptAsync(
-                "Titular", "Nombre del titular");
-            string numero = await Application.Current.MainPage.DisplayPromptAsync(
-                "Número", "Número de tarjeta o cuenta");
-            string vencimiento = await Application.Current.MainPage.DisplayPromptAsync(
-                "Vencimiento", "MM/AA");
-
-            if (string.IsNullOrWhiteSpace(alias) || string.IsNullOrWhiteSpace(numero))
-                return;
-
-            var metodo = new MetodoPago
-            {
-                Alias = alias,
-                Titular = titular,
-                NumeroEnmascarado = numero,
-                Vencimiento = vencimiento,
-                Marca = "Personalizado"
-            };
-
-            bool ok = await clienteService.GuardarMetodoPago(metodo);
-            if (ok)
-            {
-                MetodosPago.Add(metodo);
-            }
+            await Shell.Current.GoToAsync(nameof(Views.AgregarMetodoPagoPage));
         }
 
         private async Task AgregarDireccion()
         {
-            string calle = await Application.Current.MainPage.DisplayPromptAsync(
-                "Dirección", "Calle");
-            string numero = await Application.Current.MainPage.DisplayPromptAsync(
-                "Dirección", "Número");
-            string ciudad = await Application.Current.MainPage.DisplayPromptAsync(
-                "Dirección", "Ciudad");
-            string provincia = await Application.Current.MainPage.DisplayPromptAsync(
-                "Dirección", "Provincia");
-            string cp = await Application.Current.MainPage.DisplayPromptAsync(
-                "Dirección", "Código Postal");
+            await Shell.Current.GoToAsync(nameof(Views.AgregarDireccionPage));
+        }
 
-            if (string.IsNullOrWhiteSpace(calle) || string.IsNullOrWhiteSpace(ciudad))
-                return;
-
-            var direccion = new Direccion
+        private async Task EditarMetodoPago(MetodoPago metodo)
+        {
+            if (metodo == null) return;
+            
+            try
             {
-                Calle = calle,
-                Numero = numero,
-                Ciudad = ciudad,
-                Provincia = provincia,
-                CodigoPostal = cp
-            };
+                var metodoPagoJson = JsonSerializer.Serialize(metodo);
+                await Shell.Current.GoToAsync($"{nameof(Views.AgregarMetodoPagoPage)}?metodoPagoJson={Uri.EscapeDataString(metodoPagoJson)}");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    $"No se pudo abrir la página de edición: {ex.Message}",
+                    "OK");
+            }
+        }
 
-            bool ok = await clienteService.GuardarDireccion(direccion);
+        private async Task EliminarMetodoPago(MetodoPago metodo)
+        {
+            if (metodo == null) return;
+
+            bool confirm = await Application.Current.MainPage.DisplayAlert(
+                "Confirmar eliminación",
+                $"¿Estás seguro de que quieres eliminar el método de pago {metodo.Metodo}?",
+                "Sí",
+                "No");
+
+            if (!confirm) return;
+
+            bool ok = await clienteService.EliminarMetodoPago(metodo.IdMetodoPago);
             if (ok)
             {
-                Direcciones.Add(direccion);
+                MetodosPago.Remove(metodo);
+                await Application.Current.MainPage.DisplayAlert(
+                    "Éxito",
+                    "Método de pago eliminado correctamente",
+                    "OK");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "No se pudo eliminar el método de pago",
+                    "OK");
+            }
+        }
+
+        private async Task EditarDireccion(Direccion direccion)
+        {
+            if (direccion == null) return;
+            
+            try
+            {
+                var direccionJson = JsonSerializer.Serialize(direccion);
+                await Shell.Current.GoToAsync($"{nameof(Views.AgregarDireccionPage)}?direccionJson={Uri.EscapeDataString(direccionJson)}");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    $"No se pudo abrir la página de edición: {ex.Message}",
+                    "OK");
+            }
+        }
+
+        private async Task EliminarDireccion(Direccion direccion)
+        {
+            if (direccion == null) return;
+
+            bool confirm = await Application.Current.MainPage.DisplayAlert(
+                "Confirmar eliminación",
+                $"¿Estás seguro de que quieres eliminar la dirección {direccion.Etiqueta}?",
+                "Sí",
+                "No");
+
+            if (!confirm) return;
+
+            bool ok = await clienteService.EliminarDireccion(direccion.IdDireccion);
+            if (ok)
+            {
+                Direcciones.Remove(direccion);
+                await Application.Current.MainPage.DisplayAlert(
+                    "Éxito",
+                    "Dirección eliminada correctamente",
+                    "OK");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "No se pudo eliminar la dirección",
+                    "OK");
             }
         }
 

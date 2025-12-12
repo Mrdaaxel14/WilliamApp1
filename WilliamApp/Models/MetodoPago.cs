@@ -1,30 +1,26 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace WilliamApp.Models
 {
     public class MetodoPago
     {
-        [JsonPropertyName("idMetodoPago")]
+        [JsonPropertyName("idMetodoPagoUsuario")]
         public int IdMetodoPago { get; set; }
 
-        [JsonPropertyName("alias")]
-        public string Alias { get; set; }
+        [JsonPropertyName("metodo")]
+        public string Metodo { get; set; }
 
         [JsonPropertyName("titular")]
         public string Titular { get; set; }
 
-        [JsonPropertyName("numeroEnmascarado")]
-        public string NumeroEnmascarado { get; set; }
+        [JsonPropertyName("ultimos4")]
+        public string Ultimos4 { get; set; }
 
-        [JsonPropertyName("vencimiento")]
-        public string Vencimiento { get; set; }
+        [JsonPropertyName("expiracion")]
+        public string Expiracion { get; set; }
 
-        [JsonPropertyName("marca")]
-        public string Marca { get; set; }
-
-        public string Resumen => string.IsNullOrWhiteSpace(NumeroEnmascarado)
-            ? Alias
-            : $"{Marca} {NumeroEnmascarado} - {Titular}";
+        public string Resumen => string.IsNullOrWhiteSpace(Ultimos4)
+            ? Metodo ?? "Sin definir"
+            : $"{Metodo} ****{Ultimos4} - {Titular}";
     }
 }
