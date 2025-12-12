@@ -12,9 +12,8 @@ namespace WilliamApp.Services
     {
         protected readonly HttpClient client;
         protected readonly JsonSerializerOptions jsonOptions;
-        //Conexion para emulador:
-        //Conexion para emulador: 
 
+        //Conexion para emulador:
         protected const string BASE_URL = "http://10.0.2.2:5185/api/";
         //Conexion para Celular fisico:
         //protected const string BASE_URL = "http://192.168.0.20:5185/api/";

@@ -93,6 +93,14 @@
                             Command="{Binding AgregarDireccionCommand}" />
                 </VerticalStackLayout>
             </Frame>
+            <!-- Botón Cerrar Sesión -->
+            <Button Text="Cerrar Sesión"
+                    BackgroundColor="#E53935"
+                    TextColor="White"
+                    CornerRadius="8"
+                    HeightRequest="48"
+                    Command="{Binding CerrarSesionCommand}"
+                    Margin="0,20,0,0"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

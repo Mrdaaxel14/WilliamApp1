@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using WilliamApp.Models;
 using WilliamApp.Services;
+using WilliamApp.Helpers;
 
 namespace WilliamApp.ViewModels
 {
@@ -48,6 +49,9 @@ namespace WilliamApp.ViewModels
         public ICommand EditarDireccionCommand { get; }
         public ICommand EliminarDireccionCommand { get; }
 
+        // Nuevo comando para cerrar sesión
+        public ICommand CerrarSesionCommand { get; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public PerfilViewModel()
@@ -63,6 +67,8 @@ namespace WilliamApp.ViewModels
             EliminarMetodoPagoCommand = new Command<MetodoPago>(async (metodo) => await EliminarMetodoPago(metodo));
             EditarDireccionCommand = new Command<Direccion>(async (direccion) => await EditarDireccion(direccion));
             EliminarDireccionCommand = new Command<Direccion>(async (direccion) => await EliminarDireccion(direccion));
+
+            CerrarSesionCommand = new Command(async () => await CerrarSesion());
 
             _ = CargarPerfil();
         }
@@ -142,7 +148,7 @@ namespace WilliamApp.ViewModels
         private async Task EditarMetodoPago(MetodoPago metodo)
         {
             if (metodo == null) return;
-            
+
             try
             {
                 var metodoPagoJson = JsonSerializer.Serialize(metodo);
@@ -190,7 +196,7 @@ namespace WilliamApp.ViewModels
         private async Task EditarDireccion(Direccion direccion)
         {
             if (direccion == null) return;
-            
+
             try
             {
                 var direccionJson = JsonSerializer.Serialize(direccion);
@@ -233,6 +239,24 @@ namespace WilliamApp.ViewModels
                     "No se pudo eliminar la dirección",
                     "OK");
             }
+        }
+
+        // Nuevo método: cerrar sesión
+        private async Task CerrarSesion()
+        {
+            bool confirm = await Application.Current.MainPage.DisplayAlert(
+                "Cerrar Sesión",
+                "¿Estás seguro de que deseas cerrar sesión?",
+                "Sí",
+                "No");
+
+            if (!confirm) return;
+
+            // Limpiar token
+            Settings.Token = string.Empty;
+
+            // Volver al login
+            Application.Current.MainPage = new NavigationPage(new Views.LoginPage());
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -26,4 +26,7 @@
         <ShellContent ContentTemplate="{DataTemplate views:CuentaUsuarioPage}" />
     </FlyoutItem>
 
+    <!-- Menu fijo abajo del Flyout -->
+    <MenuItem Text="Cerrar Sesión" IconImageSource="logout.png" Clicked="OnCerrarSesionClicked" />
+
 </Shell>

@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WilliamApp.Services;
 using WilliamApp.Views;
-using WilliamApp;
+using WilliamApp.Helpers;
+using Microsoft.Maui.Controls;
 
 namespace WilliamApp.ViewModels
 {
@@ -16,6 +14,7 @@ namespace WilliamApp.ViewModels
     {
         private string email;
         private string password;
+        private bool isBusy;
 
         private readonly AuthService authService;
 
@@ -33,6 +32,12 @@ namespace WilliamApp.ViewModels
             set { password = value; OnPropertyChanged(); }
         }
 
+        public bool IsBusy
+        {
+            get => isBusy;
+            set { isBusy = value; OnPropertyChanged(); }
+        }
+
         public ICommand LoginCommand { get; }
         public ICommand IrARegistroCommand { get; }
 
@@ -45,26 +50,46 @@ namespace WilliamApp.ViewModels
 
         private async Task Login()
         {
-            var result = await authService.Login(Email, Password);
+            if (IsBusy) return;
 
-            if (result.Success)
+            try
             {
-                // Cambiar la MainPage para que la navegación use el Shell principal
-                Application.Current.MainPage = new AppShell();
+                IsBusy = true;
+
+                var result = await authService.Login(Email?.Trim(), Password);
+
+                if (result.Success)
+                {
+                    // Cambiar la MainPage para que la navegación use el Shell principal
+                    // (el token ya fue guardado en Settings por AuthService)
+                    Application.Current.MainPage = new AppShell();
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Error",
+                        result.Message,
+                        "OK"
+                    );
+                }
             }
-            else
+            catch (Exception ex)
             {
                 await Application.Current.MainPage.DisplayAlert(
                     "Error",
-                    result.Message,
+                    $"Ocurrió un error: {ex.Message}",
                     "OK"
                 );
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
         private async Task IrARegistro()
         {
-            await Application.Current.MainPage.Navigation.PushAsync(new Views.RegisterPage());
+            await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
         }
 
         void OnPropertyChanged([CallerMemberName] string name = null)
