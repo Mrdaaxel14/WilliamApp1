@@ -13,7 +13,7 @@ namespace WilliamApp.Services
 {
     public class AuthService : ApiService
     {
-        public async Task<bool> Login(string email, string password)
+        public async Task<LoginResult> Login(string email, string password)
         {
             var data = new { email, password };
             var json = JsonSerializer.Serialize(data);
@@ -22,16 +22,40 @@ namespace WilliamApp.Services
                 new StringContent(json, Encoding.UTF8, "application/json"));
 
             if (!response.IsSuccessStatusCode)
-                return false;
+                return new LoginResult 
+                { 
+                    Success = false, 
+                    Message = "Usuario no encontrado. ¿No tienes cuenta? Regístrate para comenzar."
+                };
 
             var content = await response.Content.ReadAsStringAsync();
             var obj = JsonSerializer.Deserialize<LoginResponse>(content, jsonOptions);
 
             if (string.IsNullOrEmpty(obj?.Token))
-                return false;
+                return new LoginResult 
+                { 
+                    Success = false, 
+                    Message = "Usuario no encontrado. ¿No tienes cuenta? Regístrate para comenzar."
+                };
 
+            // Validar que el usuario sea Cliente
+            if (obj.User?.Rol != "Cliente")
+            {
+                // No guardar el token y mostrar mensaje neutral
+                return new LoginResult 
+                { 
+                    Success = false, 
+                    Message = "Usuario no encontrado. ¿No tienes cuenta? Regístrate para comenzar."
+                };
+            }
+
+            // Si es cliente, guardar token y continuar
             Settings.Token = obj.Token;
-            return true;
+            return new LoginResult 
+            { 
+                Success = true, 
+                Message = "Login exitoso"
+            };
         }
 
         public async Task<bool> Register(string nombre, string email, string password, string telefono)
@@ -61,5 +85,12 @@ namespace WilliamApp.Services
     public class LoginResponse
     {
         public string Token { get; set; }
+        public Usuario User { get; set; }
+    }
+
+    public class LoginResult
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
     }
 }
